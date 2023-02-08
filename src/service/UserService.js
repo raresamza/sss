@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const BASE_URL="http://localhost:8080/user";
-const MONGO_URL="https://licenta-production.up.railway.app"
-
+const MONGO_URL="https://licenta-production.up.railway.app/user"
 
 class UserService {
 
