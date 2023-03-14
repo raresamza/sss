@@ -135,6 +135,21 @@ const saveUser = (e) => {
   }
   
 }
+const saveBaseUser = (e) => {
+  e.preventDefault();
+  checkAge()
+  checkMail()
+  checkString()
+  if(checkAge() && checkMail() && checkString()) {
+    UserService.saveUserBase(user).then((response) => {
+      console.log(response);
+    }).catch((err) => {
+      console.log(err);
+    })
+  
+  }
+  
+}
 
 
   return (
