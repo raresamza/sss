@@ -15,19 +15,19 @@ const Navbar = () => {
         </div>
         <ul className='flex items-center space-x-10 px-10 text-lg '>
             <li>
-            <Link to="/home"><a className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold'>Home</a></Link>
+            <Link to="/home" className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold'>Home</Link>
             </li>
             <li>
-            <Link to="/students-tab"><a className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold' href='#'>Students</a></Link>
+            <Link to="/students-tab" className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold'>Students</Link>
             </li>
             <li>
-            <Link to="/courses-tab"><a className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold ' href='#'>Lessons</a></Link>
+            <Link to="/courses-tab" className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold '>Lessons</Link>
             </li>
             <li>
                 <a className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold ' href='#'>Create Quiz</a>
             </li>
             <li>
-            <Link to="/user-profile"><a className='text-2xl' href='#'><FontAwesomeIcon icon={faUser} /></a></Link>
+            <Link to="/user-profile" className='text-2xl'><FontAwesomeIcon icon={faUser} /></Link>
             </li>
             <li>
                 <a className='text-2xl' href='#'><FontAwesomeIcon icon={faFire} /></a>
