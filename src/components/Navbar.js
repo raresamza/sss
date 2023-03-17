@@ -2,6 +2,8 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCode,faFire } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-regular-svg-icons'
+import { Link } from "react-router-dom";
+
 
 
 //  
@@ -13,19 +15,19 @@ const Navbar = () => {
         </div>
         <ul className='flex items-center space-x-10 px-10 text-lg '>
             <li>
-                <a className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold'  href='#'>Home</a>
+            <Link to="/home"><a className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold'>Home</a></Link>
             </li>
             <li>
-                <a className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold' href='#'>Students</a>
+            <Link to="/students-tab"><a className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold' href='#'>Students</a></Link>
             </li>
             <li>
-                <a className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold ' href='#'>Lessons</a>
+            <Link to="/courses-tab"><a className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold ' href='#'>Lessons</a></Link>
             </li>
             <li>
                 <a className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold ' href='#'>Create Quiz</a>
             </li>
             <li>
-                <a className='text-2xl' href='#'><FontAwesomeIcon icon={faUser} /></a>
+            <Link to="/user-profile"><a className='text-2xl' href='#'><FontAwesomeIcon icon={faUser} /></a></Link>
             </li>
             <li>
                 <a className='text-2xl' href='#'><FontAwesomeIcon icon={faFire} /></a>

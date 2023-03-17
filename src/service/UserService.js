@@ -11,7 +11,11 @@ class UserService {
         saveUserBase(user) {
             return axios.post(BASE_URL+"/register/teacher",user);
         }
-}
 
+        getStudents() {
+            return axios.get(MONGO_URL+"/student");
+        }
+}
+        
 export default new UserService();
 
