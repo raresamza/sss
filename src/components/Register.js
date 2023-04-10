@@ -207,7 +207,7 @@ function checkURL() {
   const photo = document.getElementById("photo");
   // const photo2= window.getComputedStyle(photo, "::file-selector-button");
   // console.log(photo);
-  if (user.photoURL!=null || user.photoURL!="") {
+  if (user.photoURL!==null || user.photoURL!=="") {
     isValid=false;
     // photo2.style.background = "#FF00FF";
     // console.log(photo2);
