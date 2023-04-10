@@ -35,5 +35,6 @@ class UserService {
         }
 }
 //removed "new" keyword before UserService maybe this broke if it breaks   
-export default new UserService();
+let userService = new UserService
+export default userService;
 
