@@ -7,10 +7,11 @@ import { faEyeSlash} from '@fortawesome/free-solid-svg-icons'
 import UserService from "../service/UserService";
 import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 import { storage } from "./firebase";
+import { async } from "@firebase/util";
 
 
 
-const Register = (event) => {
+const RegisterStudent = (event) => {
 
   const  [user, setUser] = useState({
     id: "",
@@ -69,6 +70,18 @@ const handleChange = (e) => {
     );
     
   };
+
+  const saveBoth= (e) => {
+    e.preventDefault();
+      const file = e.target[0].files[0];
+      if (!file) return;
+      const sotrageRef = ref(storage, `files/${file.name}`);
+      getDownloadURL(sotrageRef).then((downloadURL) => {console.log(downloadURL)
+        user.photoURL = downloadURL;
+        console.log("user url in function before save: "+user.photoURL);
+        saveBaseUserPhoto(e)
+      });
+  }
 
 function checkString() {
 
@@ -191,8 +204,9 @@ const saveBaseUserPhoto = (e) => {
   checkMail()
   checkString()
   // checkURL();
+  console.log("photo url in save user: "+user.photoURL);
   if(checkAge() && checkMail() && checkString()) {
-    UserService.saveUserBasePhoto(user).then((response) => {
+    UserService.saveUserStudentBasePhoto(user).then((response) => {
       console.log(response);
       // console.log("testing user url: "+ user.photoURL);
     }).catch((err) => {
@@ -207,7 +221,7 @@ function checkURL() {
   const photo = document.getElementById("photo");
   // const photo2= window.getComputedStyle(photo, "::file-selector-button");
   // console.log(photo);
-  if (user.photoURL!=null || user.photoURL!="") {
+  if (user.photoURL!==null || user.photoURL!=="") {
     isValid=false;
     // photo2.style.background = "#FF00FF";
     // console.log(photo2);
@@ -218,17 +232,7 @@ function checkURL() {
 
 }
 
-const saveBoth= (e) => {
-  e.preventDefault();
-    const file = e.target[0].files[0];
-    if (!file) return;
-    const sotrageRef = ref(storage, `files/${file.name}`);
-    getDownloadURL(sotrageRef).then((downloadURL) => {console.log(downloadURL)
-      user.photoURL = downloadURL;
-      console.log("user url in function before save: "+user.photoURL);
-      saveBaseUserPhoto(e)
-    });
-}
+
 
   return (
     <>
@@ -237,7 +241,6 @@ const saveBoth= (e) => {
         <input type="file" id="photo" className="file:border-none file:hover:shadow-xl file:bg-blue-700 cursor-pointer font-semibold w-[max-content] rounded-lg file:rounded-lg file:hover:bg-blue-600 file:px-6 file:py-3" />
         <button className="hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold" type="submit">Upload</button>
       </form> */}
-      {/* { formHandler(e); saveBaseUserPhoto(e);} */}
       <form onSubmit={saveBoth} className="flex flex-col max-w-[480px] mx-auto mt-[4rem]">
         <input type="file" id="photo" className="file:border-none file:hover:shadow-xl file:bg-blue-700 cursor-pointer font-semibold w-[max-content] rounded-lg file:rounded-lg file:hover:bg-blue-600 file:px-6 file:py-3" />
         <h1 className="text-4xl font-bold mb-8">Register</h1>
@@ -292,4 +295,4 @@ const saveBoth= (e) => {
   );
 };
 
-export default Register;
+export default RegisterStudent;

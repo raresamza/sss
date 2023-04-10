@@ -16,7 +16,7 @@ const StudentsTab = () => {
     const fetchData = async () => {
       setLaoding(true);
       try {
-        const students = await UserService.getStudents();
+        const students = await UserService.getStudentsBase();
         console.log(students.data);
         setStudents(students.data)
       } catch (err) {
@@ -66,7 +66,7 @@ const StudentsTab = () => {
           {students.map((student) => (
           <tr key={student.id}>
             {/* <td className='w-1/8 px-2 font-semibold text-lg'>poza</td> */}
-            <td><img className='rounded-full w-24' src="/raton.jpeg" alt="Raton"></img></td>
+            <td><img className='rounded-full w-24' src={student.photoURL} alt="Raton"></img></td>
             <td className='w-1/8 px-2 font-semibold text-2xl'>{student.firstName}</td>
             <td className='w-1/8 pl-2 font-semibold text-2xl'>{student.lastName}</td>
             <td className='px-1  scale-[3] font-thin' >|</td>

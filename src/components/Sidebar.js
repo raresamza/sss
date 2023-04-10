@@ -8,7 +8,7 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 const Sidebar = () => {
   return (
     <>
-    <div className='min-h-[100vh-80px] w-72 border-r-2 border-gray-400'>
+    <div className='min-h-[calc(100vh-80px)] w-72 border-r-2 border-gray-400'>
         <ul className='mt-6'>
             <li className='text-lg font-bold px-4 underline'>1 - Ceva Titlu</li>
             <ul className='px-8 '>
