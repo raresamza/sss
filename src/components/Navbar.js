@@ -24,7 +24,7 @@ const Navbar = () => {
             <Link to="/courses-tab" className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold '>Lessons</Link>
             </li>
             <li>
-            <Link to="home"   className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold ' >      Create Quiz</Link>
+            <Link to="/home"   className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold ' >      Create Quiz</Link>
             </li>
             <li>
             <Link to="/user-profile" className='text-2xl'><FontAwesomeIcon icon={faUser} /></Link>
