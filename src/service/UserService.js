@@ -34,6 +34,6 @@ class UserService {
             return axios.get(BASE_URL+"/student");
         }
 }
-        
-export default new UserService();
+//removed "new" keyword before UserService maybe this broke if it breaks   
+export default UserService();
 

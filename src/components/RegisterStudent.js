@@ -5,9 +5,8 @@ import { useState } from "react";
 import { faEyeSlash} from '@fortawesome/free-solid-svg-icons'
 
 import UserService from "../service/UserService";
-import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
+import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "./firebase";
-import { async } from "@firebase/util";
 
 
 
@@ -38,38 +37,38 @@ const handleChange = (e) => {
   const regMail=new RegExp("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
 
 
-  const [progress, setProgress] = useState(0);
-  const formHandler = async (e) => {
-    e.preventDefault();
-    const file = e.target[0].files[0];
-    await uploadFiles(file);
-  };
+  // const [progress, setProgress] = useState(0);
+  // const formHandler = async (e) => {
+  //   e.preventDefault();
+  //   const file = e.target[0].files[0];
+  //   await uploadFiles(file);
+  // };
 
-  const uploadFiles = (file) => {
-    //
-    if (!file) return;
-    const sotrageRef = ref(storage, `files/${file.name}`);
-    const uploadTask = uploadBytesResumable(sotrageRef, file);
+  // const uploadFiles = (file) => {
+  //   //
+  //   if (!file) return;
+  //   const sotrageRef = ref(storage, `files/${file.name}`);
+  //   const uploadTask = uploadBytesResumable(sotrageRef, file);
 
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const prog = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setProgress(prog);
-      },
-      (error) => console.log(error),
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          // console.log("File available at", downloadURL);
-            user.photoURL = downloadURL;
-          console.log("User photoURL: "+user.photoURL);
-        });
-      }
-    );
+  //   uploadTask.on(
+  //     "state_changed",
+  //     (snapshot) => {
+  //       const prog = Math.round(
+  //         (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+  //       );
+  //       setProgress(prog);
+  //     },
+  //     (error) => console.log(error),
+  //     () => {
+  //       getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+  //         // console.log("File available at", downloadURL);
+  //           user.photoURL = downloadURL;
+  //         console.log("User photoURL: "+user.photoURL);
+  //       });
+  //     }
+  //   );
     
-  };
+  // };
 
   const saveBoth= (e) => {
     e.preventDefault();
@@ -168,34 +167,34 @@ function togglePasswordConfirm(e) {
   }
 }
 
-const saveUser = (e) => {
-  e.preventDefault();
-  checkAge()
-  checkMail()
-  checkString()
-  if(checkAge() && checkMail() && checkString()) {
-    UserService.saveUser(user).then((response) => {
-      console.log(response);
-    }).catch((err) => {
-      console.log(err);
-    })
+// const saveUser = (e) => {
+//   e.preventDefault();
+//   checkAge()
+//   checkMail()
+//   checkString()
+//   if(checkAge() && checkMail() && checkString()) {
+//     UserService.saveUser(user).then((response) => {
+//       console.log(response);
+//     }).catch((err) => {
+//       console.log(err);
+//     })
   
-  }
+//   }
   
-}
-const saveBaseUser = (e) => {
-  e.preventDefault();
-  checkAge()
-  checkMail()
-  checkString()
-  if(checkAge() && checkMail() && checkString()) {
-    UserService.saveUserBase(user).then((response) => {
-      console.log(response);
-    }).catch((err) => {
-      console.log(err);
-    })
-  }
-}
+// }
+// const saveBaseUser = (e) => {
+//   e.preventDefault();
+//   checkAge()
+//   checkMail()
+//   checkString()
+//   if(checkAge() && checkMail() && checkString()) {
+//     UserService.saveUserBase(user).then((response) => {
+//       console.log(response);
+//     }).catch((err) => {
+//       console.log(err);
+//     })
+//   }
+// }
 
 const saveBaseUserPhoto = (e) => {
   e.preventDefault();
@@ -216,21 +215,21 @@ const saveBaseUserPhoto = (e) => {
   
 }
 
-function checkURL() {
-  let isValid=true;
-  const photo = document.getElementById("photo");
-  // const photo2= window.getComputedStyle(photo, "::file-selector-button");
-  // console.log(photo);
-  if (user.photoURL!==null || user.photoURL!=="") {
-    isValid=false;
-    // photo2.style.background = "#FF00FF";
-    // console.log(photo2);
+// function checkURL() {
+//   let isValid=true;
+//   const photo = document.getElementById("photo");
+//   // const photo2= window.getComputedStyle(photo, "::file-selector-button");
+//   // console.log(photo);
+//   if (user.photoURL!==null || user.photoURL!=="") {
+//     isValid=false;
+//     // photo2.style.background = "#FF00FF";
+//     // console.log(photo2);
 
-  }
+//   }
 
-  return isValid;
+//   return isValid;
 
-}
+// }
 
 
 
