@@ -24,13 +24,13 @@ const Navbar = () => {
             <Link to="/courses-tab" className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold '>Lessons</Link>
             </li>
             <li>
-                <a className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold ' href='#'>Create Quiz</a>
+{/*add "link to" */}            <a className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold '>Create Quiz</a>
             </li>
             <li>
             <Link to="/user-profile" className='text-2xl'><FontAwesomeIcon icon={faUser} /></Link>
             </li>
             <li>
-                <a className='text-2xl' href='#'><FontAwesomeIcon icon={faFire} /></a>
+{/* don't need href at all */}                 <a className='text-2xl'><FontAwesomeIcon icon={faFire} /></a> 
             </li>
         </ul>
     </nav>
