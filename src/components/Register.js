@@ -28,7 +28,7 @@ const handleChange = (e) => {
  
   const value= e.target.value 
   setUser({...user,[e.target.name]: value})
-  console.log(user.photoURL);
+  console.log(user.password);
 
 }
 
