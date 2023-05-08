@@ -5,11 +5,20 @@ import Sidebar from './Sidebar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import { useLocation } from 'react-router-dom'
+import { useStore } from '../utils/store'
 const ProblemView = () => {
 
+	const courseZustand = useStore((state) => state.course)
+	const lectureZustand = useStore((state) => state.lecture)
+
+
+
+
 	const courses = useLocation();
-	console.log(courses)
-	console.log("courses.state")
+	console.log(courseZustand)
+	console.log("courseZustand")
+	console.log(lectureZustand);
+	console.log("lectureZustand")
 	// console.log(lectures)
 	// console.log("courses.state")
 	// console.log(courses.state)
@@ -26,17 +35,24 @@ const ProblemView = () => {
 				<Sidebar></Sidebar>
 				{/* pui obiectu curs in props sa i dai display in sidebars */}
 				<main className='max-h-[calc(100vh-80px)] w-full overflow-y-auto px-44'>
-					{courses.state.header !== null && courses.state.header !== undefined && (
+					{/* {courses.state.header !== null && courses.state.header !== undefined && (
 						<h1 className='py-4  text-3xl font-semibold'>{courses.state.header}</h1>)}
 					{courses.state.id !== null && courses.state.id !== undefined && (
 						<h1 className='py-4  text-3xl font-semibold'>{courses.state.lectures[0].header}</h1>)}
 					{courses.state.content !== undefined && courses.state.content !== undefined && (
 						<p>{courses.state.content}</p>)}
 					{courses.state.id !== null && courses.state.id !== undefined && (
-						<p>{courses.state.lectures[0].content}</p>)}
+						<p>{courses.state.lectures[0].content}</p>)} */}
+					{/* (isMember ? '$2.00' : '$10.00' */}
+					{lectureZustand !== null ? <h1 className='py-4  text-3xl font-semibold'>{lectureZustand.header}</h1> : <h1 className='py-4  text-3xl font-semibold'>{courseZustand.lectures[0].header}</h1>}
+					{lectureZustand !== null ? <p className='pb-4' >{lectureZustand.content}</p> : <p className='pb-4' >{courseZustand.lectures[0].content}</p>}
+					{lectureZustand !== null ? <h1 className='py-4  text-3xl font-semibold'>{lectureZustand.problemHeader}</h1> : <h1 className='py-4  text-3xl font-semibold'>{courseZustand.lectures[0].problemHeader}</h1>}
+					{lectureZustand !== null ? <p className='pb-4' >{lectureZustand.problemContent}</p> : <p className='pb-4' >{courseZustand.lectures[0].problemContent}</p>}
+					{/* <h1 className='py-4  text-3xl font-semibold'>Test</h1>
+					<h1 className='py-4  text-3xl font-semibold'>Test</h1> */}
 					{/* <p className='pb-4'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rem assumenda corporis odit, facilis placeat ex quos, dolore recusandae magni, a voluptate? Labore ipsum totam similique officia repudiandae quasi eius accusantium minus quaerat dolor! Beatae eum in est consequuntur alias voluptatum eaque fugiat, consequatur vitae similique aspernatur eius quae laboriosam deserunt quisquam repudiandae porro accusantium nisi magnam a quod, incidunt veritatis adipisci non! Minima nobis quo eligendi, hic magnam rerum quasi sapiente esse suscipit corporis ipsum ratione, cumque laborum voluptatibus ad iure harum reiciendis illo fuga, aliquam laboriosam magni obcaecati possimus at. Aspernatur itaque, aliquam nisi quas, officiis similique quis inventore eligendi quisquam molestiae unde? Dolores architecto nemo tempora blanditiis eveniet odio velit iure. Alias itaque nesciunt soluta quisquam aliquid, iusto facere, ducimus saepe vel nobis sit ad veniam distinctio numquam? Consectetur mollitia est quidem temporibus itaque officia, exercitationem facere. Expedita maxime blanditiis ipsa fugiat quaerat assumenda commodi dolorem obcaecati dolor minus optio fugit ea est eligendi sint magnam ex voluptas, consequuntur vel, quasi nobis molestias. Praesentium beatae dolore soluta, nulla impedit quisquam officia eveniet facilis obcaecati magni, laudantium totam accusamus fugiat culpa nesciunt eum dolor voluptatibus architecto non aperiam ipsa expedita! Aut, adipisci itaque eos minima, numquam porro consectetur minus odio ab, cupiditate est quo nesciunt. Dolores molestiae id est atque officia ex suscipit, nobis sequi reprehenderit, reiciendis modi laudantium consequuntur eius illo, odit magni dignissimos eveniet et. Culpa error assumenda ducimus velit, aut, sit repellendus quae officia eos nihil similique earum voluptatum at sequi aliquid suscipit dolor incidunt necessitatibus non! Atque architecto itaque minima nobis beatae! Consequuntur nostrum quae perspiciatis, possimus expedita reprehenderit esse alias saepe, eius tempore voluptatum voluptas exercitationem. Quis atque voluptate eos officiis iure in doloribus numquam maiores saepe eveniet? Dicta pariatur at cumque repellat assumenda! Et dicta officiis deleniti quas cupiditate quaerat architecto itaque nostrum!</p> */}
-					<h1 className='py-4  text-3xl font-semibold'>Problem</h1>
-					<p className='pb-4'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rem assumenda corporis odit, facilis placeat ex quos, dolore recusandae magni, a voluptate? Labore ipsum totam similique officia repudiandae quasi eius accusantium minus quaerat dolor!</p>
+					{/* <h1 className='py-4  text-3xl font-semibold'>Problem</h1>
+					<p className='pb-4'>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rem assumenda corporis odit, facilis placeat ex quos, dolore recusandae magni, a voluptate? Labore ipsum totam similique officia repudiandae quasi eius accusantium minus quaerat dolor!</p> */}
 					<h1 className='pb-4 font-semibold'>Test output</h1>
 					<textarea spellCheck={false} className='bg-black  w-full rounded-lg decoration-none border-none outline-none h-3/4 resize-none text-white px-4 py-4'></textarea>
 					<h1 className='font-semibold pb-4'>Solution</h1>

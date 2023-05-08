@@ -6,12 +6,16 @@ import { Link } from "react-router-dom";
 import jwtDecode from "jwt-decode";
 import { useCookies } from 'react-cookie';
 import { useState, useEffect } from 'react';
+import { useStore } from '../utils/store'
 import userService from '../service/UserService';
 <FontAwesomeIcon icon="fa-solid fa-arrow-right" />
 
 
 const Sidebar = () => {
 
+    const courseZustand = useStore((state) => state.course)
+    const lectureZustand = useStore((state) => state.lecture)
+    const setLecture = useStore((state) => state.setLecture)
 
     const navigate = useNavigate();
 
@@ -43,6 +47,11 @@ const Sidebar = () => {
         fetchData();
     }, []);
 
+    function handleLectureClick(lecture) {
+        setLecture(lecture);
+        navigate("/courses-tab/" + courseZustand.courseCode + "/lecture/" + lecture.header)
+    }
+
 
     return (
         <>
@@ -57,11 +66,11 @@ const Sidebar = () => {
                                     <li onClick={(e) => navigate("/courses-tab/" + course.courseCode + "/lecture/" + lecture.header, { state: lecture })} className='mt-2 hover:text-blue-700 hover:cursor-pointer'> <FontAwesomeIcon className='mr-2' icon={faArrowRight} />{lecture.header}</li>
                                 </ul>))}
                         </ul>))} */}
-                    <ul key={courses.id} className='mt-6'>
-                        <li onClick={(e) => navigate("/courses-tab/" + courses.courseCode, { state: courses })} className='  text-lg font-bold px-4 underline'><span className='hover:text-xl cursor-pointer'>{courses.title}</span></li>
-                        {courses.lectures.map((lecture) => (
+                    <ul key={courseZustand.id} className='mt-6'>
+                        <li onClick={(e) => navigate("/courses-tab/" + courseZustand.courseCode, { state: courses })} className='  text-lg font-bold px-4 underline'><span className='hover:text-xl cursor-pointer'>{courseZustand.title}</span></li>
+                        {courseZustand.lectures.map((lecture) => (
                             <ul key={lecture.header} className='px-8 '>
-                                <li onClick={(e) => navigate("/courses-tab/" + courses.courseCode + "/lecture/" + lecture.header, { state: lecture })} className='mt-2 hover:text-blue-700 hover:cursor-pointer'> <FontAwesomeIcon className='mr-2' icon={faArrowRight} />{lecture.header}</li>
+                                <li onClick={() => handleLectureClick(lecture)} className='mt-2 hover:text-blue-700 hover:cursor-pointer'> <FontAwesomeIcon className='mr-2' icon={faArrowRight} />{lecture.header}</li>
                             </ul>))}
                     </ul>
                     <ul className='py-8'>

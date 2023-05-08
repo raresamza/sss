@@ -8,11 +8,16 @@ import userService from '../service/UserService'
 import jwtDecode from "jwt-decode";
 import { useCookies } from 'react-cookie';
 import { useNavigate } from "react-router-dom";
+import { useStore } from '../utils/store'
+
 
 
 
 
 const CoursesTab = () => {
+
+	const setCourse = useStore((state) => state.setCourse)
+
 
 	const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
 
@@ -44,9 +49,9 @@ const CoursesTab = () => {
 
 
 
-	async function retrieveCourse(courseCode) {
-		const course = await userService.getCoursesByCode(courseCode);
-		return course.data;
+	function handleClick(course) {
+		setCourse(course);
+		navigate("/courses-tab/" + course.courseCode);
 	}
 
 
@@ -62,9 +67,9 @@ const CoursesTab = () => {
 			{!laoding && courses !== null && (
 				<div>
 					{courses.map((course) => (
-						console.log(course),
-						console.log("course inside map"),
-						<div key={course.courseCode} onClick={(e) => navigate("/courses-tab/" + course.courseCode, { state: course.courseCode })} className='border-2 border-black mx-20 px-4 py-4 rounded-lg hover:border-4 mb-6'>
+						// console.log(course),
+						// console.log("course inside map"),
+						<div key={course.courseCode} onClick={() => handleClick(course)} className='border-2 border-black mx-20 px-4 py-4 rounded-lg hover:border-4 mb-6'>
 							<p className='text-4xl font-bold'>{course.title}</p>
 							<p className='text-lg font-semibold'>{course.courseDescription}</p>
 						</div>))}

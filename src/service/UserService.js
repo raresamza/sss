@@ -72,6 +72,10 @@ class UserService {
         return axios.get(BASE_URL_COURSE + "/get-by-code/" + code, code);
     }
 
+    addLectureToCourse(lecture) {
+        return axios.put(BASE_URL_COURSE + "/add/lecture", lecture)
+    }
+
 }
 //removed "new" keyword before UserService maybe this broke if it breaks   
 let userService = new UserService();

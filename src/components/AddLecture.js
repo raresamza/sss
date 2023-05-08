@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from './Navbar'
 import { useState } from 'react'
+import userService from '../service/UserService'
 
 const AddLecture = () => {
 
@@ -56,6 +57,22 @@ const AddLecture = () => {
             document.getElementById("problemContent").style.borderColor = "black"
         }
 
+        let lectureObject = {
+            header: lecture.header,
+            content: lecture.content,
+            problemHeader: lecture.problemHeader,
+            problemContent: lecture.problemContent
+        }
+
+        let lectureDTO = {
+            courseCode: lecture.courseCode,
+            lecture: lectureObject
+        }
+        console.log(lectureDTO)
+
+        userService.addLectureToCourse(lectureDTO).then((response) => {
+            console.log(response)
+        })
 
     }
 
