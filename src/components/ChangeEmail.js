@@ -3,6 +3,7 @@ import jwtDecode from "jwt-decode";
 import { useCookies } from 'react-cookie';
 import { useState } from "react";
 import userService from '../service/UserService';
+import Navbar from './Navbar';
 
 const ChangeEmail = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
@@ -68,6 +69,7 @@ const ChangeEmail = () => {
 
     return (
         <>
+            <Navbar></Navbar>
             <h1 className='px-44 text-4xl font-bold py-10 mb-16'>Change Email</h1>
             <div className='flex items-center justify-center'>
                 <div className='text-center'>
