@@ -6,17 +6,9 @@ import jwtDecode from "jwt-decode";
 import userService from '../service/UserService';
 
 
-
 const Enroll = () => {
 
     const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
-
-
-
-
-
-
-
 
     const [addDTO, setAddDTO] = useState({
         email: jwtDecode(cookies.jwt).sub,

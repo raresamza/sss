@@ -1,10 +1,12 @@
 import React from 'react'
+import { useState, useEffect } from 'react';
 import Navbar from './Navbar'
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 
 const HomePage = () => {
+
 
 	const navigate = useNavigate()
 
@@ -19,6 +21,7 @@ const HomePage = () => {
 		navigate("/sign-up");
 
 	}
+
 
 
 	return (
@@ -38,7 +41,11 @@ const HomePage = () => {
 				</div>
 				<p className='text-center fixed bottom-10 w-full font-bold text-lg '>© Leetik 2023  </p>
 			</div>
+
+
 		</>
+
+
 
 	)
 }

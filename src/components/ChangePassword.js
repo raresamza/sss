@@ -8,7 +8,7 @@ import Navbar from './Navbar';
 const ChangePassword = () => {
 
 
-    const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
+    const [cookies] = useCookies(['cookie-name']);
 
 
     const changePassword = async (e) => {

@@ -30,7 +30,6 @@ const CoursesTab = () => {
 	const [courses, setCourses] = useState(null)
 
 	let email = jwtDecode(cookies.jwt).sub
-	let i = 0
 
 	useEffect(() => {
 		const fetchData = async () => {

@@ -4,17 +4,27 @@ import Sidebar from './Sidebar'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useStore } from '../utils/store'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useFirstRender } from './UseFirstRender'
 import Discussions from './Discussions'
 import Solutions from './Solutions'
+import LectrueDisplayBlock from './LectrueDisplayBlock'
 const ProblemView = () => {
+
+
+	const firstRender = useFirstRender();
+
 
 	const courseZustand = useStore((state) => state.course)
 	const lectureZustand = useStore((state) => state.lecture)
+	const [laoding, setLaoding] = useState(true)
+
 
 	const [switcher, setSwitcher] = useState(true)
+	const navigate = useNavigate();
+
 
 	// let switcher = true
 
@@ -26,6 +36,11 @@ const ProblemView = () => {
 		console.log(switcher)
 	}
 
+	useEffect(() => {
+		if (courseZustand.lectures.length == 0) {
+			navigate('/courses-tab/addLecture')
+		}
+	}, [firstRender]);
 
 
 	const courses = useLocation();
@@ -40,7 +55,7 @@ const ProblemView = () => {
 			<div className='grid grid-cols-[288px,1fr] grid-rows-1'>
 				<Sidebar></Sidebar>
 				<main className='max-h-[calc(100vh-80px)] w-full overflow-y-auto'>
-					<div className=' px-44'>
+					{/* <div className=' px-44'>
 						{lectureZustand !== null ? <h1 className='py-4  text-3xl font-semibold'>{lectureZustand.header}</h1> : <h1 className='py-4  text-3xl font-semibold'>{courseZustand.lectures[0].header}</h1>}
 						{lectureZustand !== null ? <p className='pb-4' >{lectureZustand.content}</p> : <p className='pb-4' >{courseZustand.lectures[0].content}</p>}
 						{lectureZustand !== null ? <h1 className='py-4  text-3xl font-semibold'>{lectureZustand.problemHeader}</h1> : <h1 className='py-4  text-3xl font-semibold'>{courseZustand.lectures[0].problemHeader}</h1>}
@@ -54,7 +69,12 @@ const ProblemView = () => {
 								<button className="bg-green-600 rounded-lg h-12  w-36 align-left text-white float-right hover:bg-green-700 "><span className="text-lg mr-3 ">Run</span> <FontAwesomeIcon icon={faPlay} /></button>
 							</div>
 						</div>
-					</div>
+					</div> */}
+					{courseZustand.lectures.length != 0 ? <LectrueDisplayBlock courseZustand={courseZustand} lectureZustand={lectureZustand}></LectrueDisplayBlock>
+						:
+						<h1 className='py-52 px-44 w-full  text-3xl font-semibold text-rose-600'>Looks like you don't have any courses, please add some to start learning.
+							If you cannot add courses,please inform someone with the permission to do so</h1>
+					}
 					<div className='my-10  border-t-2 border-gray-400'></div>
 					<div className='px-44 flex items-center justify-start mb-10 '>
 						<button onClick={toggle} className="rounded-xl h-12 w-32 border-2 border-black mr-10">Discussions</button>

@@ -16,6 +16,8 @@ import ResetPassword from './components/ResetPassword';
 import Enroll from './components/Enroll';
 import AddCourse from './components/AddCourse';
 import AddLecture from './components/AddLecture';
+import QuizPage from './components/QuizPage';
+import CreateQuiz from './components/CreateQuiz';
 
 //add course code checker
 function App() {
@@ -36,6 +38,8 @@ function App() {
           <Route path='/students-tab' element={<StudentsTab />}></Route>
           <Route path='/courses-tab' element={<CoursesTab />}></Route>
           <Route path='/home' element={<HomePage />}></Route>
+          <Route path='/create-quiz' element={<CreateQuiz />}></Route>
+          <Route path='/quiz-page' element={<QuizPage />}></Route>
           <Route path='/change-email' element={<ChangeEmail />}></Route>
           <Route path='/change-password' element={<ChangePassword />}></Route>
           <Route path='/reset-password' element={<ResetPassword />}></Route>

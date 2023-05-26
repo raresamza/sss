@@ -16,6 +16,8 @@ const Sidebar = () => {
     const courseZustand = useStore((state) => state.course)
     const lectureZustand = useStore((state) => state.lecture)
     const setLecture = useStore((state) => state.setLecture)
+    const setCourse = useStore((state) => state.setCourse)
+
 
     const navigate = useNavigate();
 
@@ -52,6 +54,12 @@ const Sidebar = () => {
         navigate("/courses-tab/" + courseZustand.courseCode + "/lecture/" + lecture.header)
     }
 
+    function handleCourseClick(coruse) {
+        setCourse(coruse);
+        setLecture(null);
+        navigate("/courses-tab/" + courseZustand.courseCode)
+    }
+
 
     return (
         <>
@@ -67,7 +75,8 @@ const Sidebar = () => {
                                 </ul>))}
                         </ul>))} */}
                     <ul key={courseZustand.id} className='mt-6'>
-                        <li onClick={(e) => navigate("/courses-tab/" + courseZustand.courseCode, { state: courses })} className='  text-lg font-bold px-4 underline'><span className='hover:text-xl cursor-pointer'>{courseZustand.title}</span></li>
+                        {/* <li onClick={(e) => navigate("/courses-tab/" + courseZustand.courseCode, { state: courses })} className='  text-lg font-bold px-4 underline'><span className='hover:text-xl cursor-pointer'>{courseZustand.title}</span></li> */}
+                        <li onClick={() => handleCourseClick(courseZustand)} className='  text-lg font-bold px-4 underline'><span className='hover:text-xl cursor-pointer'>{courseZustand.title}</span></li>
                         {courseZustand.lectures.map((lecture) => (
                             <ul key={lecture.header} className='px-8 '>
                                 <li onClick={() => handleLectureClick(lecture)} className='mt-2 hover:text-blue-700 hover:cursor-pointer'> <FontAwesomeIcon className='mr-2' icon={faArrowRight} />{lecture.header}</li>

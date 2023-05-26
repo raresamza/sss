@@ -12,9 +12,8 @@ import { useCookies } from 'react-cookie';
 //  
 const Navbar = () => {
 
-
-
   const [cookies] = useCookies(['cookie-name']);
+
 
 
   return (
@@ -37,13 +36,18 @@ const Navbar = () => {
           {/* <Link to="/courses-tab" className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold '>Lessons</Link> */}
         </li>
         <li>
-          {cookies.jwt !== undefined ? <Link to="/home" className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold'>Create Quiz</Link> : <h1 className='hover:cursor-not-allowed  hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold hover:underline'>Create Quiz</h1>}
+          {cookies.jwt !== undefined ? <Link to="/create-quiz" className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold'>Create Quiz</Link> : <h1 className='hover:cursor-not-allowed  hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold hover:underline'>Create Quiz</h1>}
           {/* <Link to="/home" className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold ' >      Create Quiz</Link> */}
+        </li>
+        <li>
+          {cookies.jwt !== undefined ? <Link to="/quiz-page" className='hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold'>Take Quiz</Link> : <h1 className='hover:cursor-not-allowed  hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold hover:underline'>Take Quiz </h1>}
+
         </li>
         <li>
           {cookies.jwt !== undefined ? <Link to="/user-profile" className=' text-2xl hover:underline hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:font-semibold'><FontAwesomeIcon icon={faUser} /></Link> : <h1 className='hover:cursor-not-allowed  hover:decoration-cyan-700 hover:decoration-2 hover:underline-offset-[6px] hover:underline hover:font-bold text-2xl'><FontAwesomeIcon icon={faUser} /></h1>}
           {/* <Link to="/user-profile" className='text-2xl'><FontAwesomeIcon icon={faUser} /></Link> */}
         </li>
+
         <li>
           <Link to="/home" className='text-2xl'>   <FontAwesomeIcon icon={faFire} /></Link>
         </li>
