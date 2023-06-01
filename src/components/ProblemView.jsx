@@ -43,11 +43,11 @@ const ProblemView = () => {
 	}, [firstRender]);
 
 
-	const courses = useLocation();
-	console.log(courseZustand)
-	console.log("courseZustand")
-	console.log(lectureZustand);
-	console.log("lectureZustand")
+	// const courses = useLocation();
+	// console.log(courseZustand)
+	// console.log("courseZustand")
+	// console.log(lectureZustand);
+	// console.log("lectureZustand")
 
 	return (
 		<>
