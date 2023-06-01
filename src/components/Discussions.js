@@ -85,7 +85,6 @@ const Discussions = () => {
     return (
 
         <div className='px-44 '>
-
             <div className='flex items-center justify-center mb-10 '>
                 <img className='rounded-full w-14 mr-4 ' src="/raton.jpeg" alt="Raton"></img>
                 <div className=' w-full flex justify-end items-center relative '>
