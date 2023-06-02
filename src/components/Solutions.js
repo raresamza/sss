@@ -1,6 +1,6 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { useRef, useState, useEffect } from 'react';
 import userService from '../service/UserService'
 import { useStore } from '../utils/store'
@@ -14,6 +14,37 @@ const Solutions = () => {
 
     const [relaod, setRelaod] = useState(true)
 
+    const [text, setText] = useState({ value: '', caret: -1, target: null });
+
+    useEffect(() => {
+
+        if (text.caret >= 0) {
+
+            text.target.setSelectionRange(text.caret + 4, text.caret + 4);
+
+        }
+
+    }, [text]);
+
+    const handleTab = (e) => {
+
+        let content = e.target.value;
+        let caret = e.target.selectionStart;
+
+        if (e.key === 'Tab') {
+
+            e.preventDefault();
+
+            let newText = content.substring(0, caret) + ' '.repeat(4) + content.substring(caret);
+
+            setText({ value: newText, caret: caret, target: e.target });
+
+        }
+
+    }
+
+    const handleText = (e) => setText({ value: e.target.value, caret: -1, target: e.target });
+
     const textareaRef = useRef(null)
 
     const [laoding, setLaoding] = useState(true)
@@ -23,11 +54,8 @@ const Solutions = () => {
     const courseZustand = useStore((state) => state.course)
     const lectureZustand = useStore((state) => state.lecture)
 
-
-    const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
-
-
-
+    //fa metoda sa dea fetch la poza de profil bazat pe mail
+    const [cookies] = useCookies(['cookie-name']);
 
 
     const postSolution = (e) => {
@@ -76,35 +104,7 @@ const Solutions = () => {
             setLaoding(false);
         };
         fetchData();
-    }, [relaod]);
-
-
-    // const handleChange = (e) => {
-
-    //     const value = e.target.value
-    //     setAreaText({ ...areaText, [e.target.name]: value })
-    //     console.log(areaText);
-
-    // }
-
-
-    const handleKeyDown = (event) => {
-        if (event.key === 'Tab') {
-            event.preventDefault();
-            event.stopPropagation();
-            let val = textareaRef.current.value
-            let start = textareaRef.current.selectionStart
-            let end = textareaRef.current.selectionEnd
-
-            textareaRef.current.value = val.substring(0, start) + '\t' + val.substring(end);
-
-            textareaRef.current.selectionStart = textareaRef.current.selectionEnd = start + 1;
-
-            return false;
-        }
-    };
-
-
+    }, [courseZustand.courseCode, courseZustand.lectures, lectureZustand, relaod]);
 
 
     return (
@@ -112,7 +112,7 @@ const Solutions = () => {
             <div className='flex items-center justify-center mb-10 relative'>
                 <img className='rounded-full w-14 mr-4 ' src="/raton.jpeg" alt="Raton"></img>
                 <textarea
-                    ref={textareaRef} id="solution" onKeyDown={(e) => handleKeyDown(e)} spellCheck={false} className='bg-black  w-full rounded-lg decoration-none border-none outline-none h-[600px] resize-none text-white px-12 py-4' defaultValue="Add	 a solution"></textarea>
+                    ref={textareaRef} id="solution" onKeyDown={(e) => handleTab(e)} onChange={(e) => handleText(e)} value={text.value} spellCheck={false} className='bg-black  w-full rounded-lg decoration-none border-none outline-none h-[600px] resize-none text-white px-12 py-4' defaultValue="Add	 a solution"></textarea>
                 <button onClick={(e) => postSolution(e)} className="  rounded-lg absolute text-white top-0 right-0  w-14 h-11"><FontAwesomeIcon icon={faPaperPlane} /></button>
 
             </div>
@@ -122,7 +122,7 @@ const Solutions = () => {
                         <div className='flex items-center justify-center mb-10 ' key={y}>
                             <img className='rounded-full w-14 mr-4 ' src={solution.photoUrl} alt="Raton"></img>
                             <textarea
-                                ref={textareaRef} readOnly={true} onKeyDown={(e) => handleKeyDown(e)} spellCheck={false} className='bg-black  w-full rounded-lg decoration-none border-none outline-none h-[600px] resize-none text-white px-4 py-4' defaultValue={solution.solution}></textarea>
+                                ref={textareaRef} readOnly={true} spellCheck={false} className='bg-black  w-full rounded-lg decoration-none border-none outline-none h-[600px] resize-none text-white px-4 py-4' defaultValue={solution.solution}></textarea>
                         </div>))}
                 </div>)}
             {/* <div className='flex items-center justify-center mb-10 '>
