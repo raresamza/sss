@@ -70,7 +70,7 @@ const ProblemView = () => {
 							</div>
 						</div>
 					</div> */}
-					{courseZustand.lectures.length != 0 ? <LectrueDisplayBlock courseZustand={courseZustand} lectureZustand={lectureZustand}></LectrueDisplayBlock>
+					{courseZustand.lectures.length !== 0 ? <LectrueDisplayBlock courseZustand={courseZustand} lectureZustand={lectureZustand}></LectrueDisplayBlock>
 						:
 						<h1 className='py-52 px-44 w-full  text-3xl font-semibold text-rose-600'>Looks like you don't have any courses, please add some to start learning.
 							If you cannot add courses,please inform someone with the permission to do so</h1>

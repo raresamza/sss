@@ -7,14 +7,16 @@ import { useStore } from '../utils/store'
 import { useCookies } from 'react-cookie';
 import jwtDecode from "jwt-decode";
 
+//fa metoda sa dea fetch la poza de profil bazat pe mail
 
 
 const Solutions = () => {
 
+    const [userPhoto, setUserPhoto] = useState(null)
 
     const [relaod, setRelaod] = useState(true)
 
-    const [text, setText] = useState({ value: '', caret: -1, target: null });
+    const [text, setText] = useState({ value: 'Add a solution', caret: -1, target: null });
 
     useEffect(() => {
 
@@ -32,15 +34,10 @@ const Solutions = () => {
         let caret = e.target.selectionStart;
 
         if (e.key === 'Tab') {
-
             e.preventDefault();
-
             let newText = content.substring(0, caret) + ' '.repeat(4) + content.substring(caret);
-
             setText({ value: newText, caret: caret, target: e.target });
-
         }
-
     }
 
     const handleText = (e) => setText({ value: e.target.value, caret: -1, target: e.target });
@@ -54,7 +51,6 @@ const Solutions = () => {
     const courseZustand = useStore((state) => state.course)
     const lectureZustand = useStore((state) => state.lecture)
 
-    //fa metoda sa dea fetch la poza de profil bazat pe mail
     const [cookies] = useCookies(['cookie-name']);
 
 
@@ -97,6 +93,8 @@ const Solutions = () => {
                     console.log(lectureZustand.header)
                 }
                 const solutions = await (await userService.getCoruseSolutions(courseZustand.courseCode, header)).data
+                const photo = await (await userService.getUserPhotoByEmail(jwtDecode(cookies.jwt).sub)).data
+                setUserPhoto(photo)
                 setSolutions(solutions)
             } catch (err) {
                 console.log(err)
@@ -104,15 +102,16 @@ const Solutions = () => {
             setLaoding(false);
         };
         fetchData();
-    }, [courseZustand.courseCode, courseZustand.lectures, lectureZustand, relaod]);
+    }, [cookies.jwt, courseZustand.courseCode, courseZustand.lectures, lectureZustand, relaod]);
 
+    // console.log(userPhoto)
 
     return (
         <div className='px-[6.5rem]'>
             <div className='flex items-center justify-center mb-10 relative'>
-                <img className='rounded-full w-14 mr-4 ' src="/raton.jpeg" alt="Raton"></img>
+                <img className='rounded-full w-14 mr-4 ' src={userPhoto} alt="Raton"></img>
                 <textarea
-                    ref={textareaRef} id="solution" onKeyDown={(e) => handleTab(e)} onChange={(e) => handleText(e)} value={text.value} spellCheck={false} className='bg-black  w-full rounded-lg decoration-none border-none outline-none h-[600px] resize-none text-white px-12 py-4' defaultValue="Add	 a solution"></textarea>
+                    ref={textareaRef} id="solution" onKeyDown={(e) => handleTab(e)} onChange={(e) => handleText(e)} value={text.value} spellCheck={false} className='bg-black  w-full rounded-lg decoration-none border-none outline-none h-[600px] resize-none text-white px-12 py-4' ></textarea>
                 <button onClick={(e) => postSolution(e)} className="  rounded-lg absolute text-white top-0 right-0  w-14 h-11"><FontAwesomeIcon icon={faPaperPlane} /></button>
 
             </div>

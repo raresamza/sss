@@ -91,6 +91,30 @@ class UserService {
     getCoruseSolutions(coruseCode, lectureHeader) {
         return axios.get(BASE_URL_COURSE + "/solutions/" + coruseCode + "/" + lectureHeader, coruseCode, lectureHeader)
     }
+
+    getUserPhotoByEmail(email) {
+        return axios.get(BASE_URL + "/photourl/" + email, email)
+    }
+
+    compile() {
+        return axios.post("https://ce.judge0.com/submissions/?base64_encoded=false&wait=false", {
+            "source_code": "#include <stdio.h>\n\nint main(void) {\n  char name[10];\n  scanf(\"%s\", name);\n  printf(\"hello, %s\n\", name);\n  return 0;\n}",
+            "language_id": 4,
+            "stdin": "world"
+        }, {
+            "Content- Type": "application/json",
+            "X-Auth-Token": "427d6c1267mshae7fe963ae0886cp106d18jsn5992b865ed82"
+        })
+    }
+
+    checkKey() {
+        return axios.post(" https://ce.judge0.com/authenticate", {
+            "X-Auth-Token": "427d6c1267mshae7fe963ae0886cp106d18jsn5992b865ed82"
+        },
+        )
+    }
+
+
 }
 //removed "new" keyword before UserService maybe this broke if it breaks   
 let userService = new UserService();
