@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
@@ -9,13 +9,30 @@ import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/theme-dracula";
 import "ace-builds/src-noconflict/ext-language_tools";
+// import loadingJson from "../../public/98288-loading.json"
 
 const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
 
 
+    const [solutionCode, setSolutionCode] = useState("public class Main {\n" +
+        "\tpublic static void main( String args[]) {\n" +
+        "\t\tSystem.out.println(\"Hello world\");\n\t}\n" +
+        "}\n");
 
-    function onChange(newValue) {
-        console.log(newValue);
+    const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+
+    }, [loading])
+
+
+
+    function onChange(newValue, e) {
+        // console.log(newValue);
+        console.log(JSON.stringify(solutionCode))
+        setSolutionCode(newValue)
+        // setSolutionCode({ ...solutionCode, newValue })
+
     }
 
 
@@ -36,13 +53,10 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
         //     console.log(error)
         // })
         // console.log(data)
-
+        setLoading(true)
         let data = {
-            source_code: "print(\"Hello World\")\n" +
-                "print(\"Hi\")\n" +
-                "val=input()\n" +
-                "print(val)\n",
-            "language_id": 92,
+            source_code: solutionCode,
+            "language_id": 91,
             "stdin": "world"
         }
 
@@ -53,23 +67,30 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
                 'content-type': 'application/json'
             },
         }).then((response) => {
-            console.log(response.data.token)
+            // console.log(solutionCode)
+            // console.log(JSON.stringify(solutionCode))
+            // console.log(response.data.token)
             axios.get("https://judge0-ce.p.rapidapi.com/submissions/" + response.data.token, {
                 headers: {
                     'X-RapidAPI-Key': '427d6c1267mshae7fe963ae0886cp106d18jsn5992b865ed82',
                     'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
                 },
             }).then((response) => {
+                // console.log(JSON.stringify(solutionCode))
+                // console.log(response.data)
                 console.log(response.data.stdout)
             }).catch((error) => {
+                setLoading(false)
                 console.log(error)
             })
         }).catch((error) => {
+            setLoading(false)
             console.log(error)
         });
+        setLoading(false)
     }
 
-    let value = "class Main {\n" + "\tpublic static void main( String args[]) {\n" + "\t\tSystem.out.println(\"Hello world\")\n" + "    }\n"
+    let value = "class Main {\n" + "\tpublic static void main( String args[]) {\n" + "\tSystem.out.println(\"Hello world\");\n\t}\n" + "}\n"
 
 
 
@@ -103,17 +124,25 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
                             fontSize: 14,
                             showPrintMargin: false,
                         }}
-                        value={value}
-                        className="class"
+                        value={solutionCode}
+                        className="solutuionCode"
                         style={{ backgroundColor: 'black', color: 'white', borderTopRightRadius: '10px', borderTopLeftRadius: '10px' }}
                     />
                     <div className='bg-[#282A36] h-16 px-4 rounded-b-lg flex justify-end items-center  '>
-                        <button onClick={(e) => handleClick(e)} className="bg-green-600 rounded-lg h-12  w-36 align-left text-white float-right hover:bg-green-700 "><span className="text-lg mr-3 ">Run</span> <FontAwesomeIcon icon={faPlay} /></button>
+                        {
+                            loading === false ? <button onClick={(e) => handleClick(e)} className="bg-green-600 rounded-lg h-12  w-36 align-left text-white float-right hover:bg-green-700  ">
+                                <span className="text-lg mr-3 ">Run</span> <FontAwesomeIcon icon={faPlay} />
+                            </button>
+                                : <button className=" bg-green-600 rounded-lg h-12  w-36 align-left text-white float-right hover:bg-green-700 flex justify-center ">
+                                    <svg className=" h-5 w-5 my-auto animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </button>
+                        }
                     </div>
                 </div>
-
-
-                <AceEditor
+                {/* <AceEditor
                     mode="java"
                     theme="dracula"
                     onChange={(e) => {
@@ -130,7 +159,7 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
                     value={value}
                     className="class"
                     style={{ backgroundColor: 'black', color: 'white', borderRadius: '10px' }}
-                />
+                /> */}
             </div>
 
         </>
