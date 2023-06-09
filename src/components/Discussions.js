@@ -26,11 +26,6 @@ const Discussions = () => {
 
     const [cookies] = useCookies(['cookie-name']);
 
-    // console.log("course")
-    // console.log(courseZustand)
-    // console.log("lecture")
-    // console.log(lectureZustand)
-
     const postComment = (e) => {
         e.preventDefault();
         let comment

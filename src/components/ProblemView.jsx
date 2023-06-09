@@ -3,7 +3,7 @@ import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useStore } from '../utils/store'
 import { useState, useEffect } from 'react'
@@ -76,12 +76,19 @@ const ProblemView = () => {
 							If you cannot add courses,please inform someone with the permission to do so</h1>
 					}
 					<div className='my-10  border-t-2 border-gray-400'></div>
-					<div className='px-44 flex items-center justify-start mb-10 '>
-						<button onClick={toggle} className="rounded-xl h-12 w-32 border-2 border-black mr-10">Discussions</button>
-						<button onClick={toggle} className="rounded-xl h-12 w-32 border-2 border-black">Solutions</button>
+					<div className='flex justify-between mb-10'>
+						<div className='px-44 flex items-center justify-start  '>
+							<button onClick={toggle} className=" hover:bg-gray-200 rounded-xl h-12 w-32 border-2 border-black mr-10">Discussions</button>
+							<button onClick={toggle} className="hover:bg-gray-200 rounded-xl h-12 w-32 border-2 border-black">Solutions</button>
+						</div>
+						<div className='px-44 flex items-center justify-end '>
+							<button onClick={toggle} className="hover:bg-gray-200 rounded-xl h-12 w-32 border-2 border-black mr-10"><FontAwesomeIcon icon={faThumbsUp} /></button>
+							<button onClick={toggle} className="hover:bg-gray-200 rounded-xl h-12 w-32 border-2 border-black"><FontAwesomeIcon icon={faThumbsDown} /></button>
+						</div>
 					</div>
+
 					{switcher ? <Discussions></Discussions> : <Solutions></Solutions>}
-				</main>
+				</main >
 
 			</div >
 		</>

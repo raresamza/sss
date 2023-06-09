@@ -114,6 +114,10 @@ class UserService {
         )
     }
 
+    postTests(addTestDTO) {
+        return axios.put(BASE_URL_COURSE + "/add/tests", addTestDTO)
+    }
+
 
 }
 //removed "new" keyword before UserService maybe this broke if it breaks   
