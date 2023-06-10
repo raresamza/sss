@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faPlay, faVialCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import qs from 'qs';
 import userService from '../service/UserService'
@@ -17,14 +17,18 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
     const [cookies] = useCookies(['cookie-name']);
     const [role, setRole] = useState("STUDENT")
 
+
+
     const [solutionCode, setSolutionCode] = useState("public class Main {\n" +
         "\tpublic static void main( String args[]) {\n" +
         "\t\tSystem.out.println(\"Hello world\");\n\t}\n" +
         "}\n");
     const [testCode, setTestCode] = useState();
+    const [inputs, setInputs] = useState("");
 
     const [loading, setLoading] = useState(false)
     const [loadingTest, setLoadingTest] = useState(false)
+    const [loadingInputs, setLoadingInputs] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -41,6 +45,12 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
 
 
 
+    const onChangeInputs = (e, newValue) => {
+        setInputs(e.target.value)
+        console.log(inputs)
+
+
+    }
     function onChange(newValue, e) {
         console.log(JSON.stringify(solutionCode))
         setSolutionCode(newValue)
@@ -49,6 +59,8 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
         console.log(JSON.stringify(testCode))
         setTestCode(newValue)
     }
+
+
 
 
 
@@ -127,9 +139,40 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
         });
         setLoading(false)
     }
+    //iei inputs, pt fiecare test??? faci un obiect de tip data carea va avea codu luat editor,laguage 91
+    //  pt java si std in din inputs si le pui in array u submissions
+    //iei tokenurile si le pui in array u tokens
+    //faci call la api cu un string care o sa fie tokens.join(",") ca header, vezi postman
+    //dai display la teste vezi tu cum dupa cum iti da arrayu de truth cu numele->subject to change aici vezi cum faci testele
+    //  ca sa poti da display calumea
+    const postInputs = async (e) => {
 
-    let value = "class Main {\n" + "\tpublic static void main( String args[]) {\n" + "\tSystem.out.println(\"Hello world\");\n\t}\n" + "}\n"
+        e.preventDefault();
 
+        setLoadingInputs(true)
+        let header
+        if (lectureZustand === null) {
+            header = courseZustand.lectures[0].header
+            console.log(courseZustand.lectures[0].header)
+        } else {
+            header = lectureZustand.header
+            console.log(lectureZustand.header)
+        }
+        let addInputDTO = {
+            "coruseCode": courseZustand.courseCode,
+            "lectureHeader": header,
+            "inputs": inputs.split(",")
+        }
+        console.log(addInputDTO)
+
+        await userService.postInputs(addInputDTO).then((response) => {
+            console.log(response.data)
+        }).catch((error) => {
+            console.log(error)
+            setLoadingInputs(false)
+        })
+        setLoadingInputs(false)
+    }
 
 
     return (
@@ -181,6 +224,10 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
                                         </svg>
                                     </button>
                             }
+                        </div>
+                        <div className=' w-full flex justify-end items-center relative my-5'>
+                            <input onChange={(e) => { onChangeInputs(e); }} className=" w-full px-4 rounded-full border-[2px] border-gray-900 p-2 " type="text" id="inputs" name="inputs" placeholder="Start a discussion..." />
+                            <button onClick={(e) => postInputs(e)} className=" hover:bg-gray-300 rounded-3xl absolute text-black right-0 border-2 w-14 h-11 border-black"><span className='text-xl '> <FontAwesomeIcon icon={faVialCircleCheck} /></span></button>
                         </div>
                     </div>
                 }

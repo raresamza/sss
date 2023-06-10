@@ -118,6 +118,34 @@ class UserService {
         return axios.put(BASE_URL_COURSE + "/add/tests", addTestDTO)
     }
 
+    postInputs(addInputDTO) {
+        return axios.put(BASE_URL_COURSE + "/add/inputs", addInputDTO)
+    }
+
+    upvote(VoteDTO) {
+        return axios.put(BASE_URL_COURSE + "/upvote", VoteDTO)
+    }
+
+    downvote(VoteDTO) {
+        return axios.put(BASE_URL_COURSE + "/downvote", VoteDTO)
+    }
+
+    getUpvotes(coruseCode, lectureHeader) {
+        return axios.get(BASE_URL_COURSE + "/get/upvotes/" + coruseCode + "/" + lectureHeader, coruseCode, lectureHeader)
+    }
+
+    getDownvotes(courseCode, lectureHeader) {
+        return axios.get(BASE_URL_COURSE + "/get/downvotes/" + courseCode + "/" + lectureHeader, courseCode, lectureHeader)
+    }
+
+    getTets(courseCode, lectureHeader) {
+        return axios.get(BASE_URL_COURSE + "/get/tests/" + courseCode + "/" + lectureHeader, courseCode, lectureHeader)
+    }
+
+    getInputs(courseCode, lectureHeader) {
+        return axios.get(BASE_URL_COURSE + "/get/inputs/" + courseCode + "/" + lectureHeader, courseCode, lectureHeader)
+    }
+
 
 }
 //removed "new" keyword before UserService maybe this broke if it breaks   

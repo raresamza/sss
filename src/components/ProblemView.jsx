@@ -11,15 +11,26 @@ import { useFirstRender } from './UseFirstRender'
 import Discussions from './Discussions'
 import Solutions from './Solutions'
 import LectrueDisplayBlock from './LectrueDisplayBlock'
+import jwtDecode from "jwt-decode";
+import userService from '../service/UserService'
+import { useCookies } from 'react-cookie';
+
+
+
 const ProblemView = () => {
 
 
 	const firstRender = useFirstRender();
 
+	const [relaod, setRelaod] = useState(true)
 
+
+	const [cookies] = useCookies(['cookie-name']);
 	const courseZustand = useStore((state) => state.course)
 	const lectureZustand = useStore((state) => state.lecture)
 	const [laoding, setLaoding] = useState(true)
+	const [upvotes, setUpvotes] = useState(0)
+	const [downvotes, setDownvotes] = useState(0)
 
 
 	const [switcher, setSwitcher] = useState(true)
@@ -28,12 +39,55 @@ const ProblemView = () => {
 
 	// let switcher = true
 
+	const upvote = async (e) => {
+		e.preventDefault();
+		let header
+		if (lectureZustand === null) {
+			header = courseZustand.lectures[0].header
+		} else {
+			header = lectureZustand.header
+		}
+		let upvoteDTO = {
+			"courseCode": courseZustand.courseCode,
+			"lectureHeader": header,
+			"email": jwtDecode(cookies.jwt).sub
+		}
+
+		await userService.upvote(upvoteDTO).then((response) => {
+			setUpvotes(response.data)
+			setRelaod(!relaod)
+		}).catch((error) => {
+			console.log(error)
+		})
+	}
+
+	const downvote = async (e) => {
+		e.preventDefault();
+		let header
+		if (lectureZustand === null) {
+			header = courseZustand.lectures[0].header
+		} else {
+			header = lectureZustand.header
+		}
+		let voteDTO = {
+			"courseCode": courseZustand.courseCode,
+			"lectureHeader": header,
+			"email": jwtDecode(cookies.jwt).sub
+		}
+
+		await userService.downvote(voteDTO).then((response) => {
+			setDownvotes(response.data)
+			setRelaod(!relaod)
+
+		}).catch((error) => {
+			console.log(error)
+		})
+	}
 
 
 	function toggle() {
 		// setSwitcher(!switcher)
 		setSwitcher(!switcher)
-		console.log(switcher)
 	}
 
 	useEffect(() => {
@@ -42,6 +96,29 @@ const ProblemView = () => {
 		}
 	}, [firstRender]);
 
+	useEffect(() => {
+		const fetchData = async () => {
+			setLaoding(true);
+
+			try {
+				let header
+				if (lectureZustand === null) {
+					header = courseZustand.lectures[0].header
+				} else {
+					header = lectureZustand.header
+				}
+				const upvotes = (await userService.getUpvotes(courseZustand.courseCode, header)).data
+				const downvotes = (await userService.getDownvotes(courseZustand.courseCode, header)).data
+				setDownvotes(downvotes)
+				setUpvotes(upvotes)
+			} catch (err) {
+				console.log(err)
+			}
+			setLaoding(false);
+
+		};
+		fetchData();
+	}, [relaod]);
 
 	// const courses = useLocation();
 	// console.log(courseZustand)
@@ -82,8 +159,8 @@ const ProblemView = () => {
 							<button onClick={toggle} className="hover:bg-gray-200 rounded-xl h-12 w-32 border-2 border-black">Solutions</button>
 						</div>
 						<div className='px-44 flex items-center justify-end '>
-							<button onClick={toggle} className="hover:bg-gray-200 rounded-xl h-12 w-32 border-2 border-black mr-10"><FontAwesomeIcon icon={faThumbsUp} /></button>
-							<button onClick={toggle} className="hover:bg-gray-200 rounded-xl h-12 w-32 border-2 border-black"><FontAwesomeIcon icon={faThumbsDown} /></button>
+							<button onClick={(e) => upvote(e)} className="hover:bg-gray-200 rounded-xl h-12 w-32 border-2 border-black mr-10"><span>{upvotes}</span> <FontAwesomeIcon icon={faThumbsUp} /></button>
+							<button onClick={(e) => downvote(e)} className="hover:bg-gray-200 rounded-xl h-12 w-32 border-2 border-black"><span>{downvotes}</span> <FontAwesomeIcon icon={faThumbsDown} /></button>
 						</div>
 					</div>
 
