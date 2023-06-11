@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faVialCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import qs from 'qs';
-import userService from '../service/UserService'
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-java";
 import "ace-builds/src-noconflict/theme-github";
@@ -11,6 +10,7 @@ import "ace-builds/src-noconflict/theme-dracula";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { useCookies } from 'react-cookie';
 import jwtDecode from "jwt-decode";
+import userService from '../service/UserService';
 
 const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
 
@@ -29,6 +29,8 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
     const [loading, setLoading] = useState(false)
     const [loadingTest, setLoadingTest] = useState(false)
     const [loadingInputs, setLoadingInputs] = useState(false)
+    const [inputsBackend, setInputsBackend] = useState("")
+    const [testsBackend, setTestsBackend] = useState("")
 
     useEffect(() => {
         const fetchData = async () => {
@@ -43,6 +45,86 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
         fetchData();
     }, [cookies.jwt, loading])
 
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+
+                let header
+                if (lectureZustand === null) {
+                    header = courseZustand.lectures[0].header
+                    console.log(courseZustand.lectures[0].header)
+                } else {
+                    header = lectureZustand.header
+                    console.log(lectureZustand.header)
+                }
+
+                const inputsBackend = (await userService.getInputs(courseZustand.courseCode, header)).data
+                setInputsBackend(inputsBackend)
+                const testsBackend = (await userService.getTests(courseZustand.courseCode, header)).data
+                setTestsBackend(testsBackend)
+            } catch (err) {
+                console.log(err)
+            }
+        };
+        fetchData();
+    }, [cookies.jwt])
+
+
+
+    const runCode = async (e) => {
+        e.preventDefault();
+        let submissions = []
+        let tokens = []
+        let outputs = []
+        let tokenString = ""
+        let data = {
+            submissions: submissions
+        }
+
+        for (let i = 0; i < inputsBackend.length; i++) {
+            let submissionData = {
+                source_code: solutionCode,
+                "language_id": 91,
+                "stdin": inputsBackend[i]
+            }
+            submissions.push(submissionData)
+        }
+        console.log(data)
+
+        await axios.post("https://judge0-ce.p.rapidapi.com/submissions/batch", data, {
+            headers: {
+                'X-RapidAPI-Key': '427d6c1267mshae7fe963ae0886cp106d18jsn5992b865ed82',
+                'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
+                'content-type': 'application/json'
+            },
+        }).then((response) => {
+            for (let i = 0; i < response.data.length; i++) {
+                tokens.push(response.data[i].token)
+            }
+            tokenString = tokens.join(",")
+
+        }).catch((error) => {
+            console.log(error)
+        })
+
+        await axios.get("https://judge0-ce.p.rapidapi.com/submissions/batch?tokens=" + tokenString, {
+            headers: {
+                'X-RapidAPI-Key': '427d6c1267mshae7fe963ae0886cp106d18jsn5992b865ed82',
+                'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
+                'content-type': 'application/json'
+            },
+        }).then((response) => {
+            for (let i = 0; i < response.data.submissions.length; i++) {
+                console.log(response.data.submissions[i])
+                console.log(response.data.submissions[i].stdout)
+                outputs.push(response.data.submissions[i].stdout)
+            }
+            console.log(outputs)
+        }).catch((error) => {
+            console.log(error)
+        })
+    }
 
 
     const onChangeInputs = (e, newValue) => {
@@ -126,6 +208,7 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
                 headers: {
                     'X-RapidAPI-Key': '427d6c1267mshae7fe963ae0886cp106d18jsn5992b865ed82',
                     'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
+                    'content-type': 'application/json'
                 },
             }).then((response) => {
                 console.log(response.data.stdout)
@@ -229,6 +312,8 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
                             <input onChange={(e) => { onChangeInputs(e); }} className=" w-full px-4 rounded-full border-[2px] border-gray-900 p-2 " type="text" id="inputs" name="inputs" placeholder="Start a discussion..." />
                             <button onClick={(e) => postInputs(e)} className=" hover:bg-gray-300 rounded-3xl absolute text-black right-0 border-2 w-14 h-11 border-black"><span className='text-xl '> <FontAwesomeIcon icon={faVialCircleCheck} /></span></button>
                         </div>
+                        <button onClick={(e) => runCode(e)} className=" bg-green-600 rounded-lg h-12  w-36 align-left text-white hover:bg-green-700 mb-10 ">Test</button>
+
                     </div>
                 }
                 {/* <textarea spellCheck={false} readOnly={true} className='bg-black  w-full rounded-lg decoration-none border-none outline-none h-[800px] resize-none text-white px-4 py-4'></textarea> */}

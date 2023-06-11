@@ -18,6 +18,7 @@ import AddCourse from './components/AddCourse';
 import AddLecture from './components/AddLecture';
 import QuizPage from './components/QuizPage';
 import CreateQuiz from './components/CreateQuiz';
+import QuizFallback from './components/QuizFallback';
 
 //add course code checker
 function App() {
@@ -46,6 +47,7 @@ function App() {
           <Route path='/courses-tab/enroll' element={<Enroll />}></Route>
           <Route path='/courses-tab/add' element={<AddCourse />}></Route>
           <Route path='/courses-tab/addLecture' element={<AddLecture />}></Route>
+          <Route path='/quiz/fallback' element={<QuizFallback />}></Route>
         </Routes>
       </BrowserRouter>
     </>

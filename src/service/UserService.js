@@ -2,6 +2,7 @@ import axios from "axios";
 
 const BASE_URL = "http://localhost:8080/user";
 const BASE_URL_ATUH = "http://localhost:8080/auth";
+const BASE_URL_QUIZ = "http://localhost:8080/quiz";
 const BASE_URL_COURSE = "http://localhost:8080/course";
 const MONGO_URL = "https://licenta-production.up.railway.app/user"
 
@@ -138,14 +139,36 @@ class UserService {
         return axios.get(BASE_URL_COURSE + "/get/downvotes/" + courseCode + "/" + lectureHeader, courseCode, lectureHeader)
     }
 
-    getTets(courseCode, lectureHeader) {
+    getTests(courseCode, lectureHeader) {
         return axios.get(BASE_URL_COURSE + "/get/tests/" + courseCode + "/" + lectureHeader, courseCode, lectureHeader)
     }
 
     getInputs(courseCode, lectureHeader) {
         return axios.get(BASE_URL_COURSE + "/get/inputs/" + courseCode + "/" + lectureHeader, courseCode, lectureHeader)
     }
+    addQuiz(quizDTO) {
+        return axios.post(BASE_URL_QUIZ + "/add", quizDTO)
+    }
 
+    addStudentToQuiz(addStudentDTO) {
+        return axios.put(BASE_URL_QUIZ + "/add/students", addStudentDTO)
+    }
+
+    addProblemToQuiz(addProblemDTO) {
+        return axios.put(BASE_URL_QUIZ + "/add/problem", addProblemDTO)
+    }
+
+    isUserActive(email) {
+        return axios.get(BASE_URL + "/active/" + email, email)
+    }
+
+    getQuizByCode(code) {
+        return axios.get(BASE_URL_QUIZ + "/get/" + code, code)
+    }
+
+    getQuizCodeFromUser(email) {
+        return axios.get(BASE_URL + "/quiz-code/" + email, email)
+    }
 
 }
 //removed "new" keyword before UserService maybe this broke if it breaks   
