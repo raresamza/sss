@@ -170,6 +170,10 @@ class UserService {
         return axios.get(BASE_URL + "/quiz-code/" + email, email)
     }
 
+    getQuizProblem(quizCode, quizProblemCode) {
+        return axios.get(BASE_URL_QUIZ + "/get/problem/" + quizCode + "/" + quizProblemCode, quizCode, quizProblemCode)
+    }
+
 }
 //removed "new" keyword before UserService maybe this broke if it breaks   
 let userService = new UserService();

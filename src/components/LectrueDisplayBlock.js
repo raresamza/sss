@@ -21,9 +21,10 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
 
     const [solutionCode, setSolutionCode] = useState("public class Main {\n" +
         "\tpublic static void main( String args[]) {\n" +
-        "\t\tSystem.out.println(\"Hello world\");\n\t}\n" +
+        "\t\tSystem.out.print(\"Hello world\");\n\t}\n" +
         "}\n");
     const [testCode, setTestCode] = useState();
+    const [testOutputs, setTestOutputs] = useState("")
     const [inputs, setInputs] = useState("");
 
     const [loading, setLoading] = useState(false)
@@ -68,15 +69,30 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
             }
         };
         fetchData();
-    }, [cookies.jwt])
+    }, [cookies.jwt, courseZustand.courseCode, courseZustand.lectures, lectureZustand])
 
 
+    const doesOutputContainNull = (output) => {
+        for (let i = 0; i < output.length; i++) {
+            if (output[i] === null) {
+                return true
+            }
+        }
+        return false
+    }
+    const isOutputEmpty = (output) => {
+        if (output.length === 0) {
+            return true
+        }
+        return false
+    }
 
     const runCode = async (e) => {
         e.preventDefault();
         let submissions = []
         let tokens = []
-        let outputs = []
+        let codeOutputs = []
+        let codeInputString = ""
         let tokenString = ""
         let data = {
             submissions: submissions
@@ -90,7 +106,6 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
             }
             submissions.push(submissionData)
         }
-        console.log(data)
 
         await axios.post("https://judge0-ce.p.rapidapi.com/submissions/batch", data, {
             headers: {
@@ -99,37 +114,81 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
                 'content-type': 'application/json'
             },
         }).then((response) => {
-            for (let i = 0; i < response.data.length; i++) {
-                tokens.push(response.data[i].token)
-            }
+            response.data.map((submission) => {
+                tokens.push(submission.token)
+                return tokens
+            })
             tokenString = tokens.join(",")
 
         }).catch((error) => {
             console.log(error)
         })
 
-        await axios.get("https://judge0-ce.p.rapidapi.com/submissions/batch?tokens=" + tokenString, {
-            headers: {
-                'X-RapidAPI-Key': '427d6c1267mshae7fe963ae0886cp106d18jsn5992b865ed82',
-                'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
-                'content-type': 'application/json'
-            },
-        }).then((response) => {
-            for (let i = 0; i < response.data.submissions.length; i++) {
-                console.log(response.data.submissions[i])
-                console.log(response.data.submissions[i].stdout)
-                outputs.push(response.data.submissions[i].stdout)
-            }
-            console.log(outputs)
-        }).catch((error) => {
-            console.log(error)
-        })
-    }
 
+        setTimeout(async () => {
+            await axios.get("https://judge0-ce.p.rapidapi.com/submissions/batch?tokens=" + tokenString, {
+                headers: {
+                    'X-RapidAPI-Key': '427d6c1267mshae7fe963ae0886cp106d18jsn5992b865ed82',
+                    'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
+                    'content-type': 'application/json'
+                },
+            }).then((response) => {
+                console.log(response)
+                response.data.submissions.map((submission) => {
+                    codeOutputs.push(submission.stdout)
+                    return codeOutputs
+                })
+                // console.log(codeOutputs)
+            }).catch((error) => {
+                console.log(error)
+            })
+
+        }, 5000)
+
+        setTimeout(async () => {
+            codeInputString = codeOutputs.toString()
+            let testObject = {
+                source_code: testsBackend,
+                language_id: 91,
+                stdin: codeInputString
+            }
+            console.log(codeInputString)
+            console.log(testObject)
+            await axios.post("https://judge0-ce.p.rapidapi.com/submissions", testObject, {
+                headers: {
+                    'X-RapidAPI-Key': '427d6c1267mshae7fe963ae0886cp106d18jsn5992b865ed82',
+                    'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
+                    'content-type': 'application/json'
+                },
+            }).then((response) => {
+
+                axios.get("https://judge0-ce.p.rapidapi.com/submissions/" + response.data.token, {
+                    headers: {
+                        'X-RapidAPI-Key': '427d6c1267mshae7fe963ae0886cp106d18jsn5992b865ed82',
+                        'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
+                        'content-type': 'application/json'
+                    },
+                }).then((response) => {
+                    console.log("🚀 ~ file: LectrueDisplayBlock.js:175 ~ runCode ~ response after final get:", response)
+                    setTestOutputs(response.data.stdout.replace(",", "\n"))
+                    let formatted1 = response.data.stdout.replace("elo", "❌")
+                    let formatted2 = formatted1.replace("hi", "✔️")
+                    let formatted3 = formatted2.replace(",", "\n")
+                    console.log("🚀 ~ file: LectrueDisplayBlock.js:177 ~ runCode ~ testOutputs(what will be printed on the text area):", formatted3)
+                }).catch((error) => {
+                    setLoading(false)
+                    console.log(error)
+                })
+            }).catch((error) => {
+                console.log(error)
+            })
+
+        }, 10000)
+    }
+    //cand postez testu tre sa dau refresh la pagina ca sa se traga din db
 
     const onChangeInputs = (e, newValue) => {
         setInputs(e.target.value)
-        console.log(inputs)
 
 
     }
@@ -138,7 +197,6 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
         setSolutionCode(newValue)
     }
     function onChangeTest(newValue, e) {
-        console.log(JSON.stringify(testCode))
         setTestCode(newValue)
     }
 
@@ -302,7 +360,7 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
                                 </button>
                                     : <button className=" bg-green-600 rounded-lg h-12  w-36 align-left text-white float-right hover:bg-green-700 flex justify-center ">
                                         <svg className=" h-5 w-5 my-auto animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth={4}></circle>
                                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                         </svg>
                                     </button>

@@ -2,6 +2,8 @@ import React from 'react'
 import Navbar from './Navbar'
 import userService from '../service/UserService'
 import { useState } from 'react'
+import AceEditor from "react-ace";
+
 const CreateQuiz = () => {
     const [quizMasterObject, setQuizMasterObject] = useState({
         quizTitle: "",
@@ -12,12 +14,18 @@ const CreateQuiz = () => {
 
     //pot accesa take quiz dar daca sunt pe lista cu studentii. 
 
+    const [testCode, setTestCode] = useState("//Write tests");
 
     const handleChange = (e) => {
 
         const value = e.target.value
         setQuizMasterObject({ ...quizMasterObject, [e.target.name]: value })
         console.log(quizMasterObject);
+    }
+
+    function onChangeTest(newValue, e) {
+        console.log(newValue)
+        setTestCode(newValue)
     }
 
     const genQuizCode = async (e) => {
@@ -88,6 +96,7 @@ const CreateQuiz = () => {
         let flagCode = true;
         let flagHeader = true;
         let flagCotnent = true;
+        let flagIputs = true;
         if (quizMasterObject.quizCode === null || quizMasterObject.quizCode === undefined || quizMasterObject.quizCode === "") {
             document.getElementById("quizCode").style.borderColor = "red"
             console.log("red")
@@ -114,11 +123,21 @@ const CreateQuiz = () => {
             flagCotnent = true;
             document.getElementById("problemContent").style.borderColor = "black"
         }
-        if (flagCode && flagHeader && flagCotnent) {
+        if (quizMasterObject.inputs === null || quizMasterObject.inputs === undefined || quizMasterObject.inputs === "") {
+            document.getElementById("inputs").style.borderColor = "red"
+            console.log("red")
+            flagCotnent = false;
+        } else {
+            flagCotnent = true;
+            document.getElementById("inputs").style.borderColor = "black"
+        }
+        if (flagCode && flagHeader && flagCotnent && flagIputs) {
             let addProblemDTO = {
                 quizCode: quizMasterObject.quizCode,
                 problemText: quizMasterObject.problemContent,
-                problemHeader: quizMasterObject.problemHeader
+                problemHeader: quizMasterObject.problemHeader,
+                inputs: quizMasterObject.inputs.split(","),
+                test: testCode
             }
             await userService.addProblemToQuiz(addProblemDTO).then((response) => {
                 console.log(response.data)
@@ -149,7 +168,27 @@ const CreateQuiz = () => {
                     <input onChange={(e) => handleChange(e)} type="text" className="ml-44 border-[2px] w-2/5 border-gray-900 rounded-md p-2 mb-10" id="problemHeader" name="problemHeader" />
                     <h1 className='px-44 text-2xl font-bold py-10'>Please provide the problem text:</h1>
                     <textarea onChange={(e) => handleChange(e)} id='problemContent' name='problemContent' spellCheck={true} className='ml-44 w-3/4 rounded-lg   outline-none h-[300px] resize-none border-2 border-black px-4 py-4 mb-10'></textarea>
-
+                    <h1 className='px-44 text-2xl font-bold py-10'>Please provide the problem inputs:</h1>
+                    <input onChange={(e) => handleChange(e)} type="text" className="ml-44 border-[2px] w-2/5 border-gray-900 rounded-md p-2 mb-10" id="inputs" name="inputs" />
+                    <AceEditor
+                        mode="java"
+                        theme="dracula"
+                        onChange={(e) => {
+                            onChangeTest(e);
+                        }}
+                        height='800px'
+                        width='100%'
+                        setOptions={{
+                            enableBasicAutocompletion: true,
+                            enableLiveAutocompletion: true,
+                            enableSnippets: true,
+                            fontSize: 14,
+                            showPrintMargin: false,
+                        }}
+                        value={testCode}
+                        className="solutuionCode"
+                        style={{ backgroundColor: 'black', color: 'white', marginLeft: '11rem', marginRight: '11rem', borderTopRightRadius: '10px', borderTopLeftRadius: '10px' }}
+                    />
                 </div>
                 <div className='flex'>
                     <button onClick={(e) => addQuizProblem(e)} className='text-white bg-green-500 hover:bg-green-600 rounded-lg px-4 py-4 mr-10 mt-10 w-52 h-[4.5rem] font-bold'>Add quiz problem</button>

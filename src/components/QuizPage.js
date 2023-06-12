@@ -87,19 +87,32 @@ const QuizPage = () => {
     }, [timeLeft, validSubmission])
 
 
+
+    const testRun = async (code, e) => {
+        e.preventDefault()
+        console.log(code)
+        console.log(quiz.quizCode)
+        const quizProblem = (await userService.getQuizProblem(quiz.quizCode, code)).data
+        console.log(quizProblem.testCode)
+        console.log(quizProblem.inputs.join(","))
+    }
+
     function testClick() {
         console.log("test")
     }
-
+    //cand se termina timpu faci useru inactiv pt quiz
     return (
         <>
             <Navbar></Navbar>
+
+            fiecare problema are nevoie de inputuri si test in backend
+            cand ii dau render la problema pot sa ii iau si ID si bazat pe ID pot sa iau inputs si testele si in acceasi manevra pot rula
             {!loading && (
                 <div className='pr-72 pl-20 relative'>
                     <p className='text-3xl py-10'>{quiz.quizTitle}</p>
                     {validSubmission ? <TimerElement minutes={minutesLeft} seconds={secondsLeft}></TimerElement> : <TimerElement minutes={0} seconds={0}></TimerElement>}
                     {quiz.problems.map((problem, y) => (
-                        <div className='text-2xl' key={y}>
+                        <div className='text-2xl' key={problem.quizProblemCode}>
                             <div className='bg-gray-400 h-1 my-10'></div>
                             <h1 >Problem name:</h1>
                             <h1 >{problem.problemHeader}</h1>
@@ -111,7 +124,7 @@ const QuizPage = () => {
                             <div className='grid grid-cols-1 grid-rows mb-10'>
                                 <textarea spellCheck={false} className=' bg-black  w-full rounded-t-lg decoration-none border-none outline-none h-[800px] resize-none text-white px-4 py-4'></textarea>
                                 <div className='bg-gray-800 h-16 px-4 rounded-b-lg flex justify-end items-center  '>
-                                    <button className="bg-green-600 rounded-lg h-12  w-36 align-left text-white float-right hover:bg-green-700 "><span className="text-lg mr-3 ">Run</span> <FontAwesomeIcon icon={faPlay} /></button>
+                                    <button onClick={(e) => testRun(problem.quizProblemCode, e)} className="bg-green-600 rounded-lg h-12  w-36 align-left text-white float-right hover:bg-green-700 "><span className="text-lg mr-3 ">Run</span> <FontAwesomeIcon icon={faPlay} /></button>
                                 </div>
                             </div>
                         </div>))}
