@@ -69,7 +69,7 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
             }
         };
         fetchData();
-    }, [cookies.jwt, courseZustand.courseCode, courseZustand.lectures, lectureZustand])
+    }, [cookies.jwt, courseZustand.courseCode, courseZustand.lectures, lectureZustand, testOutputs])
 
 
     const doesOutputContainNull = (output) => {
@@ -170,10 +170,10 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
                     },
                 }).then((response) => {
                     console.log("🚀 ~ file: LectrueDisplayBlock.js:175 ~ runCode ~ response after final get:", response)
-                    setTestOutputs(response.data.stdout.replace(",", "\n"))
-                    let formatted1 = response.data.stdout.replace("elo", "❌")
-                    let formatted2 = formatted1.replace("hi", "✔️")
-                    let formatted3 = formatted2.replace(",", "\n")
+                    let formatted1 = response.data.stdout.replaceAll("elo", "❌")
+                    let formatted2 = formatted1.replaceAll("hi", "✔️")
+                    let formatted3 = formatted2.replaceAll(",", "\n")
+                    setTestOutputs(formatted3)
                     console.log("🚀 ~ file: LectrueDisplayBlock.js:177 ~ runCode ~ testOutputs(what will be printed on the text area):", formatted3)
                 }).catch((error) => {
                     setLoading(false)
@@ -329,7 +329,7 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
                 {role === "STUDENT" ?
                     <div>
                         <h1 className='pb-4 font-semibold'>Test output</h1>
-                        <textarea spellCheck={false} readOnly={true} className='bg-black  w-full rounded-lg decoration-none border-none outline-none h-[800px] resize-none text-white px-4 py-4'></textarea>
+                        <textarea spellCheck={false} readOnly={true} className='bg-black  w-full rounded-lg decoration-none border-none outline-none h-[800px] resize-none text-white px-4 py-4' value={testOutputs}></textarea>
                     </div>
                     :
                     <div>
@@ -399,7 +399,7 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
                     />
                     <div className='bg-[#282A36] h-16 px-4 rounded-b-lg flex justify-end items-center  '>
                         {
-                            loading === false ? <button onClick={(e) => handleClick(e)} className="bg-green-600 rounded-lg h-12  w-36 align-left text-white float-right hover:bg-green-700  ">
+                            loading === false ? <button onClick={(e) => runCode(e)} className="bg-green-600 rounded-lg h-12  w-36 align-left text-white float-right hover:bg-green-700  ">
                                 <span className="text-lg mr-3 ">Run</span> <FontAwesomeIcon icon={faPlay} />
                             </button>
                                 : <button className=" bg-green-600 rounded-lg h-12  w-36 align-left text-white float-right hover:bg-green-700 flex justify-center ">
