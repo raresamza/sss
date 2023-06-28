@@ -2,10 +2,14 @@ import React from 'react'
 import Navbar from './Navbar'
 import { useState, useEffect } from 'react'
 import UserService from '../service/UserService'
+import { useCookies } from 'react-cookie';
+
 // import raton from '../../public/raton.jpeg'
 // C:\Users\rares\Desktop\last-repo\public\WhatsApp Image 2023-03-10 at 20.12.17.jpeg
 
 const StudentsTab = () => {
+
+  const [cookies] = useCookies(['cookie-name']);
 
 
   const [laoding, setLaoding] = useState(true)
@@ -16,7 +20,7 @@ const StudentsTab = () => {
     const fetchData = async () => {
       setLaoding(true);
       try {
-        const students = await UserService.getStudentsBase();
+        const students = await UserService.getStudentsBase(cookies.jwt);
         console.log(students.data);
         setStudents(students.data)
       } catch (err) {

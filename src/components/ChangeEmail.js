@@ -47,7 +47,7 @@ const ChangeEmail = () => {
         if (checkMail()) {
             console.log(email);
             console.log("email")
-            await userService.changeEmail(email).then((response) => {
+            await userService.changeEmail(email, cookies.jwt).then((response) => {
                 console.log(response.data)
             });
             //  userService.getUserByEmail(jwtDecode(cookies.jwt).sub)

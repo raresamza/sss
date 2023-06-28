@@ -37,7 +37,7 @@ const Sidebar = () => {
         const fetchData = async () => {
             setLaoding(true);
             try {
-                const coursees = await userService.getCoursesByCode(courseCodeToSend.state);
+                const coursees = await userService.getCoursesByCode(courseCodeToSend.state, cookies.jwt);
                 setCourses(coursees.data)
                 console.log(coursees.data)
                 console.log("coursees.data")
@@ -82,7 +82,7 @@ const Sidebar = () => {
                                 <li onClick={() => handleLectureClick(lecture)} className='mt-2 hover:text-blue-700 hover:cursor-pointer'> <FontAwesomeIcon className='mr-2' icon={faArrowRight} />{lecture.header}</li>
                             </ul>))}
                     </ul>
-                    <ul className='py-8'>
+                    {/* <ul className='py-8'>
                         <li className='text-lg font-bold px-4 underline'>2 - Ceva Titlu</li>
                         <ul className='px-8 pb-8'>
                             <li className='mt-2 hover:text-blue-700 hover:cursor-pointer'> <FontAwesomeIcon className='mr-2' icon={faArrowRight} />Ceva5</li>
@@ -94,7 +94,7 @@ const Sidebar = () => {
                             <li className='mt-2 hover:text-blue-700 hover:cursor-pointer'> <FontAwesomeIcon className='mr-2' icon={faArrowRight} />Ceva8</li>
                             <li className='mt-2 hover:text-blue-700 hover:cursor-pointer'> <FontAwesomeIcon className='mr-2' icon={faArrowRight} />Ceva8</li>
                         </ul>
-                    </ul>
+                    </ul> */}
 
                     <Link to="/courses-tab/addLecture"><button className=' bg-green-500 hover:bg-green-600 px-4 py-4 rounded-lg font-semibold absolute bottom-2 left-[25%] w-36'>Add lecture</button></Link>
 

@@ -53,7 +53,7 @@ const ProblemView = () => {
 			"email": jwtDecode(cookies.jwt).sub
 		}
 
-		await userService.upvote(upvoteDTO).then((response) => {
+		await userService.upvote(upvoteDTO, cookies.jwt).then((response) => {
 			setUpvotes(response.data)
 			setRelaod(!relaod)
 		}).catch((error) => {
@@ -75,7 +75,7 @@ const ProblemView = () => {
 			"email": jwtDecode(cookies.jwt).sub
 		}
 
-		await userService.downvote(voteDTO).then((response) => {
+		await userService.downvote(voteDTO, cookies.jwt).then((response) => {
 			setDownvotes(response.data)
 			setRelaod(!relaod)
 
@@ -107,8 +107,8 @@ const ProblemView = () => {
 				} else {
 					header = lectureZustand.header
 				}
-				const upvotes = (await userService.getUpvotes(courseZustand.courseCode, header)).data
-				const downvotes = (await userService.getDownvotes(courseZustand.courseCode, header)).data
+				const upvotes = (await userService.getUpvotes(courseZustand.courseCode, header, cookies.jwt)).data
+				const downvotes = (await userService.getDownvotes(courseZustand.courseCode, header, cookies.jwt)).data
 				setDownvotes(downvotes)
 				setUpvotes(upvotes)
 			} catch (err) {

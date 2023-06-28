@@ -72,7 +72,7 @@ const Solutions = () => {
             email: jwtDecode(cookies.jwt).sub
         }
         console.log(solution)
-        userService.addSolutionToCourse(solution).then((response) => {
+        userService.addSolutionToCourse(solution, cookies.jwt).then((response) => {
             setRelaod(!relaod)
         }).catch((err) => {
             console.log(err);
@@ -92,8 +92,8 @@ const Solutions = () => {
                     header = lectureZustand.header
                     console.log(lectureZustand.header)
                 }
-                const solutions = await (await userService.getCoruseSolutions(courseZustand.courseCode, header)).data
-                const photo = await (await userService.getUserPhotoByEmail(jwtDecode(cookies.jwt).sub)).data
+                const solutions = await (await userService.getCoruseSolutions(courseZustand.courseCode, header, cookies.jwt)).data
+                const photo = await (await userService.getUserPhotoByEmail(jwtDecode(cookies.jwt).sub, cookies.jwt)).data
                 setUserPhoto(photo)
                 setSolutions(solutions)
             } catch (err) {

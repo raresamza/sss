@@ -29,72 +29,149 @@ class UserService {
         return axios.post(BASE_URL + "/register/studentP", user);
     }
 
-    getStudents() {
-        return axios.get(MONGO_URL + "/student");
+    getStudents(token) {
+        return axios.get(MONGO_URL + "/student", {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        });
     }
 
-    getStudentsBase() {
-        return axios.get(BASE_URL + "/student");
+    getStudentsBase(token) {
+        return axios.get(BASE_URL + "/student", {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        });
     }
 
     authenticateBaseUser(user) {
         return axios.post(BASE_URL_ATUH + "/authenticate", user)
     }
 
-    getUserByEmail(email) {
-        return axios.get(BASE_URL + "/" + email, email);
+    getUserByEmail(email, token) {
+        return axios.get(BASE_URL + "/" + email, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, email);
     }
 
-    changeEmail(newEmail) {
-        return axios.put(BASE_URL + "/updateEmail", newEmail)
+    changeEmail(newEmail, token) {
+        return axios.put(BASE_URL + "/updateEmail", newEmail, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        })
     }
-    changePassword(password) {
-        return axios.post(BASE_URL + "/changePassword", password)
+    changePassword(password, token) {
+        return axios.post(BASE_URL + "/changePassword", password, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        })
     }
 
-    addCourse(courseDTO) {
-        return axios.post(BASE_URL_COURSE + "/add", courseDTO)
+    addCourse(courseDTO, token) {
+        return axios.post(BASE_URL_COURSE + "/add", courseDTO, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        })
     }
-    addCourseUser(addDTO) {
+    addCourseUser(addDTO, token) {
         return axios.put(BASE_URL + "/add/course", addDTO, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, {
             validateStatus: function (status) {
                 return status < 500;
             }
         })
     }
-    getCourses() {
-        return axios.get(BASE_URL_COURSE);
+    getCourses(token) {
+        return axios.get(BASE_URL_COURSE, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        });
     }
-    getCoursesByEmail(email) {
-        return axios.get(BASE_URL_COURSE + "/" + email, email);
+    getCoursesByEmail(email, token) {
+        return axios.get(BASE_URL_COURSE + "/" + email, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, email);
     }
 
-    getCoursesByCode(code) {
-        return axios.get(BASE_URL_COURSE + "/get-by-code/" + code, code);
+    getCoursesByCode(code, token) {
+        return axios.get(BASE_URL_COURSE + "/get-by-code/" + code, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, code);
     }
 
-    addLectureToCourse(lecture) {
-        return axios.put(BASE_URL_COURSE + "/add/lecture", lecture)
+    addLectureToCourse(lecture, token) {
+        return axios.put(BASE_URL_COURSE + "/add/lecture", lecture, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        })
     }
 
-    addCommentToCourse(addCommentDTO) {
-        return axios.put(BASE_URL_COURSE + "/add/comment", addCommentDTO);
+    addCommentToCourse(addCommentDTO, token) {
+        return axios.put(BASE_URL_COURSE + "/add/comment", addCommentDTO, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        });
     }
 
-    getCoruseComments(coruseCode, lectureHeader) {
-        return axios.get(BASE_URL_COURSE + "/comments/" + coruseCode + "/" + lectureHeader, coruseCode, lectureHeader)
+    getCoruseComments(coruseCode, lectureHeader, token) {
+        return axios.get(BASE_URL_COURSE + "/comments/" + coruseCode + "/" + lectureHeader, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, coruseCode, lectureHeader)
     }
 
-    addSolutionToCourse(addCommentDTO) {
-        return axios.put(BASE_URL_COURSE + "/add/solution", addCommentDTO);
+    addSolutionToCourse(addCommentDTO, token) {
+        return axios.put(BASE_URL_COURSE + "/add/solution", addCommentDTO, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        });
     }
 
-    getCoruseSolutions(coruseCode, lectureHeader) {
-        return axios.get(BASE_URL_COURSE + "/solutions/" + coruseCode + "/" + lectureHeader, coruseCode, lectureHeader)
+    getCoruseSolutions(coruseCode, lectureHeader, token) {
+        return axios.get(BASE_URL_COURSE + "/solutions/" + coruseCode + "/" + lectureHeader, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, coruseCode, lectureHeader)
     }
 
-    getUserPhotoByEmail(email) {
-        return axios.get(BASE_URL + "/photourl/" + email, email)
+    getUserPhotoByEmail(email, token) {
+        return axios.get(BASE_URL + "/photourl/" + email, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, email)
     }
 
     compile() {
@@ -115,66 +192,160 @@ class UserService {
         )
     }
 
-    postTests(addTestDTO) {
-        return axios.put(BASE_URL_COURSE + "/add/tests", addTestDTO)
+    postTests(addTestDTO, token) {
+        return axios.put(BASE_URL_COURSE + "/add/tests", addTestDTO, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        })
     }
 
-    postInputs(addInputDTO) {
-        return axios.put(BASE_URL_COURSE + "/add/inputs", addInputDTO)
+    postInputs(addInputDTO, token) {
+        return axios.put(BASE_URL_COURSE + "/add/inputs", addInputDTO, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        })
     }
 
-    upvote(VoteDTO) {
-        return axios.put(BASE_URL_COURSE + "/upvote", VoteDTO)
+    upvote(VoteDTO, token) {
+        return axios.put(BASE_URL_COURSE + "/upvote", VoteDTO, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        })
     }
 
-    downvote(VoteDTO) {
-        return axios.put(BASE_URL_COURSE + "/downvote", VoteDTO)
+    downvote(VoteDTO, token) {
+        return axios.put(BASE_URL_COURSE + "/downvote", VoteDTO, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        })
     }
 
-    getUpvotes(coruseCode, lectureHeader) {
-        return axios.get(BASE_URL_COURSE + "/get/upvotes/" + coruseCode + "/" + lectureHeader, coruseCode, lectureHeader)
+    getUpvotes(coruseCode, lectureHeader, token) {
+        return axios.get(BASE_URL_COURSE + "/get/upvotes/" + coruseCode + "/" + lectureHeader, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, coruseCode, lectureHeader)
     }
 
-    getDownvotes(courseCode, lectureHeader) {
-        return axios.get(BASE_URL_COURSE + "/get/downvotes/" + courseCode + "/" + lectureHeader, courseCode, lectureHeader)
+    getDownvotes(courseCode, lectureHeader, token) {
+        return axios.get(BASE_URL_COURSE + "/get/downvotes/" + courseCode + "/" + lectureHeader, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, courseCode, lectureHeader)
     }
 
-    getTests(courseCode, lectureHeader) {
-        return axios.get(BASE_URL_COURSE + "/get/tests/" + courseCode + "/" + lectureHeader, courseCode, lectureHeader)
+    getTests(courseCode, lectureHeader, token) {
+        return axios.get(BASE_URL_COURSE + "/get/tests/" + courseCode + "/" + lectureHeader, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, courseCode, lectureHeader)
     }
 
-    getInputs(courseCode, lectureHeader) {
-        return axios.get(BASE_URL_COURSE + "/get/inputs/" + courseCode + "/" + lectureHeader, courseCode, lectureHeader)
+    getInputs(courseCode, lectureHeader, token) {
+        return axios.get(BASE_URL_COURSE + "/get/inputs/" + courseCode + "/" + lectureHeader, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, courseCode, lectureHeader)
     }
-    addQuiz(quizDTO) {
-        return axios.post(BASE_URL_QUIZ + "/add", quizDTO)
+    addQuiz(quizDTO, token) {
+        return axios.post(BASE_URL_QUIZ + "/add", quizDTO, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        })
     }
 
-    addStudentToQuiz(addStudentDTO) {
-        return axios.put(BASE_URL_QUIZ + "/add/students", addStudentDTO)
+    addStudentToQuiz(addStudentDTO, token) {
+        return axios.put(BASE_URL_QUIZ + "/add/students", addStudentDTO, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        })
     }
 
-    addProblemToQuiz(addProblemDTO) {
-        return axios.put(BASE_URL_QUIZ + "/add/problem", addProblemDTO)
+    addProblemToQuiz(addProblemDTO, token) {
+        return axios.put(BASE_URL_QUIZ + "/add/problem", addProblemDTO, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        })
     }
 
-    isUserActive(email) {
-        return axios.get(BASE_URL + "/active/" + email, email)
+    isUserActive(email, token) {
+        return axios.get(BASE_URL + "/active/" + email, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, email)
     }
 
-    getQuizByCode(code) {
-        return axios.get(BASE_URL_QUIZ + "/get/" + code, code)
+    getQuizByCode(code, token) {
+        return axios.get(BASE_URL_QUIZ + "/get/" + code, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, code)
     }
 
-    getQuizCodeFromUser(email) {
-        return axios.get(BASE_URL + "/quiz-code/" + email, email)
+    getQuizCodeFromUser(email, token) {
+        return axios.get(BASE_URL + "/quiz-code/" + email, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, email)
     }
 
-    getQuizProblem(quizCode, quizProblemCode) {
-        return axios.get(BASE_URL_QUIZ + "/get/problem/" + quizCode + "/" + quizProblemCode, quizCode, quizProblemCode)
+    getQuizProblem(quizCode, quizProblemCode, token) {
+        return axios.get(BASE_URL_QUIZ + "/get/problem/" + quizCode + "/" + quizProblemCode, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        }, quizCode, quizProblemCode)
+    }
+
+    resetRequest(email, token) {
+        return axios.post(BASE_URL + "/resetPassword", email, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        })
+    }
+
+    addBio(AddBioDto, token) {
+        return axios.put(BASE_URL + "/add/bio", AddBioDto, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+
+        })
     }
 
 }
+//dto go before auth headers,care
 //removed "new" keyword before UserService maybe this broke if it breaks   
 let userService = new UserService();
 export default userService;

@@ -5,6 +5,7 @@ import jwtDecode from "jwt-decode";
 import { useState, useEffect } from 'react'
 import UserService from '../service/UserService'
 import { Link } from "react-router-dom";
+import userService from '../service/UserService';
 
 
 
@@ -18,6 +19,32 @@ const UserProfile = () => {
   // console.log(jwtDecode(cookies.jwt));
   // console.log(jwtDecode(cookies.jwt).sub);
 
+
+  const [AddBioDto, setAddBioDto] = useState({
+    email: jwtDecode(cookies.jwt).sub,
+    bio: ''
+  })
+
+  const handleBioChange = (e) => {
+    const value = e.target.value
+    setAddBioDto({ ...AddBioDto, [e.target.name]: value })
+    // console.log(bio);
+
+  }
+
+  const onKeyDown = async (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      console.log(AddBioDto)
+      await userService.addBio(AddBioDto, cookies.jwt).then((response) => {
+        console.log(response.data)
+      }).catch((err) => {
+        console.log(err)
+      });
+    }
+  }
+
+
   const [laoding, setLaoding] = useState(true)
 
   const [user, setUser] = useState(null)
@@ -26,7 +53,7 @@ const UserProfile = () => {
     const fetchData = async () => {
       setLaoding(true);
       try {
-        const user = await UserService.getUserByEmail(jwtDecode(cookies.jwt).sub)
+        const user = await UserService.getUserByEmail(jwtDecode(cookies.jwt).sub, cookies.jwt)
         setUser(user.data)
       } catch (err) {
         console.log(err)
@@ -54,7 +81,6 @@ const UserProfile = () => {
       <h1 className='px-44 text-4xl font-bold py-10   mb-16'> User Profile</h1>
       {!laoding && (
         <div className='pl-44 flex items-center justify-start'>
-
           <div>
             <div className='px-36 py-16  bg-gray-300  w-[560px]  rounded-lg'>
               <img className='  rounded-full w-28 absolute left-48 top-[295px]' src={user.photoURL} alt="Raton"></img>
@@ -82,7 +108,7 @@ const UserProfile = () => {
         <p className='pl-28 text-xl font-semibold'>Short Bio</p>
         {/* <p className='text-xl underline font-semibold px-44 flex justify-start items-center'>Change password</p> */}
         <Link to="/change-email"> <button className='px-44 outline-none border-none bg-transparent underline text-xl font-semibold flex justify-start items-center '> Change e-mail</button></Link>
-        <textarea placeholder="Write something about yourself" className='ml-[100px]  border-2 row-span-3 border-b-2 text-lg border-black rounded-xl px-4 py-4'></textarea>
+        <textarea placeholder='Write something about  yourself' className='ml-[100px]  border-2 row-span-3 border-b-2 text-lg border-black rounded-xl px-4 py-4' id='bio' name='bio' onChange={(e) => handleBioChange(e)} onKeyDown={(e) => onKeyDown(e)}></textarea>
         {/* <p className=' text-xl underline font-semibold  px-44  flex justify-start items-center'>Reset Password</p> */}
         {/* <p className=' text-xl underline font-semibold  px-44  flex justify-start items-center'>Change e-mail</p>  */}
         <Link to="/reset-password"> <button className='px-44 outline-none border-none bg-transparent underline text-xl font-semibold flex justify-start items-center '> Reset password</button></Link>

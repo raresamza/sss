@@ -43,7 +43,7 @@ const Discussions = () => {
             comment: document.getElementById("comment").value,
             email: jwtDecode(cookies.jwt).sub
         }
-        userService.addCommentToCourse(comment).then(() => {
+        userService.addCommentToCourse(comment, cookies.jwt).then(() => {
             setRelaod(!relaod)
         }).catch((err) => {
             console.log(err);
@@ -64,8 +64,8 @@ const Discussions = () => {
                     console.log(lectureZustand.header)
                 }
 
-                const comments = await (await userService.getCoruseComments(courseZustand.courseCode, header)).data
-                const photo = await (await userService.getUserPhotoByEmail(jwtDecode(cookies.jwt).sub)).data
+                const comments = await (await userService.getCoruseComments(courseZustand.courseCode, header, cookies.jwt)).data
+                const photo = await (await userService.getUserPhotoByEmail(jwtDecode(cookies.jwt).sub, cookies.jwt)).data
                 setUserPhoto(photo)
                 setComments(comments)
             } catch (err) {
@@ -98,7 +98,7 @@ const Discussions = () => {
                         </div>))}
                 </div>)}
 
-            <div className='flex items-center justify-center mb-10 '>
+            {/* <div className='flex items-center justify-center mb-10 '>
                 <img className='rounded-full w-14 mr-4 ' src="/raton.jpeg" alt="Raton"></img>
                 <p className=" w-full px-4 p-2 " type="text" id="comment" name="comment">testing</p>
             </div>
@@ -113,7 +113,7 @@ const Discussions = () => {
             <div className='flex items-center justify-center mb-10 '>
                 <img className='rounded-full w-14 mr-4 ' src="/raton.jpeg" alt="Raton"></img>
                 <p className=" w-full px-4 p-2 " type="text" id="comment" name="comment">testing</p>
-            </div>
+            </div> */}
         </div>
     )
 }

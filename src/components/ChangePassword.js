@@ -20,7 +20,7 @@ const ChangePassword = () => {
             newPassword: document.getElementById("newPassword").value
         }
         console.log(changePasswordObject)
-        await userService.changePassword(changePasswordObject).then((response) => {
+        await userService.changePassword(changePasswordObject, cookies.jwt).then((response) => {
             console.log(response.data)
             console.log(response)
             if (response.statusCode === 200) {

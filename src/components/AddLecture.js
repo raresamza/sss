@@ -2,8 +2,12 @@ import React from 'react'
 import Navbar from './Navbar'
 import { useState } from 'react'
 import userService from '../service/UserService'
+import { useCookies } from 'react-cookie';
 
 const AddLecture = () => {
+
+    const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
+
 
     const [lecture, setLecture] = useState({
         courseCode: "",
@@ -70,7 +74,7 @@ const AddLecture = () => {
         }
         console.log(lectureDTO)
 
-        userService.addLectureToCourse(lectureDTO).then((response) => {
+        userService.addLectureToCourse(lectureDTO, cookies.jwt).then((response) => {
             console.log(response)
         })
 

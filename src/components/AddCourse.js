@@ -2,12 +2,13 @@ import React from 'react'
 import Navbar from './Navbar'
 import userService from '../service/UserService';
 // import jwtDecode from "jwt-decode";
+import { useCookies } from 'react-cookie';
 
 import { useState } from 'react';
 
 const AddCourse = () => {
 
-    // const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
+    const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
 
 
     const [course, setCourse] = useState({
@@ -27,7 +28,7 @@ const AddCourse = () => {
     const AddCourse = async (e) => {
         const check = document.getElementById("check")
         if ((course.title !== undefined && course.title !== "" && course.title !== null) && (course.courseDescription !== undefined && course.courseDescription !== "" && course.courseDescription !== null)) {
-            await userService.addCourse(course).then((response) => {
+            await userService.addCourse(course, cookies.jwt).then((response) => {
                 if (response.status === 200) {
                     check.innerHTML = "Code course is:  \" " + response.data.courseCode + " \"🎉🎉";
                     check.style.color = "green";

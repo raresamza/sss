@@ -60,7 +60,7 @@ const QuizPage = () => {
         const fetchData = async () => {
             try {
                 let email = jwtDecode(cookies.jwt).sub
-                await userService.isUserActive(email).then((response) => {
+                await userService.isUserActive(email, cookies.jwt).then((response) => {
                     console.log(response.data)
                     if (response.data === false) {
                         navigate('/quiz/fallback')
@@ -70,8 +70,8 @@ const QuizPage = () => {
                 }).catch((error) => {
                     console.log(error)
                 })
-                const code = (await userService.getQuizCodeFromUser(email)).data
-                await userService.getQuizByCode(code).then((response) => {
+                const code = (await userService.getQuizCodeFromUser(email, cookies.jwt)).data
+                await userService.getQuizByCode(code, cookies.jwt).then((response) => {
                     quiz.quizTitle = response.data.quizTitle
                     quiz.quizCode = response.data.quizCode
                     quiz.usersEmails = response.data.usersEmails
@@ -113,7 +113,7 @@ const QuizPage = () => {
         e.preventDefault()
         console.log(code)
         console.log(quiz.quizCode)
-        const quizProblem = (await userService.getQuizProblem(quiz.quizCode, code)).data
+        const quizProblem = (await userService.getQuizProblem(quiz.quizCode, code, cookies.jwt)).data
         console.log(quizProblem.testCode)
         console.log(quizProblem.inputs)
 

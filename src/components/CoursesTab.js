@@ -35,7 +35,7 @@ const CoursesTab = () => {
 		const fetchData = async () => {
 			setLaoding(true);
 			try {
-				const courses = await userService.getCoursesByEmail(email);
+				const courses = await userService.getCoursesByEmail(email, cookies.jwt);
 				setCourses(courses.data)
 			} catch (err) {
 				console.log(err)
@@ -73,7 +73,7 @@ const CoursesTab = () => {
 							<p className='text-lg font-semibold'>{course.courseDescription}</p>
 						</div>))}
 				</div>)}
-			<div>
+			{/* <div>
 				<div className='border-2 border-black mx-20 px-4 py-4 rounded-lg hover:border-4 mb-6'>
 					<p className='text-4xl font-bold'>Tile</p>
 					<p className='text-lg font-semibold'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque nisl nisl, posuere non iaculis eget, viverra ac dolor. Mauris arcu justo, elementum cursus vehicula et, sagittis non ante. Sed at metus enim. Donec pretium dui id euismod aliquet. Proin dolor arcu, dignissim pulvinar interdum id, venenatis ullamcorper lorem. Quisque at pretium velit. Nam vel nisl in nibh molestie feugiat quis imperdiet justo. Praesent et volutpat purus. Maecenas id cursus velit. Cras vestibulum fermentum nunc vitae ultrices. Morbi auctor vel eros vel finibus. Fusce sed ullamcorper risus, et viverra diam. Nulla sed nunc vulputate urna tristique iaculis in ut sem. Sed.</p>
@@ -82,7 +82,7 @@ const CoursesTab = () => {
 			<div className='border-2 border-black mx-20 px-4 py-4 rounded-lg hover:border-4 mb-6'>
 				<p className='text-4xl font-bold'>Tile</p>
 				<p className='text-lg font-semibold'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque nisl nisl, posuere non iaculis eget, viverra ac dolor. Mauris arcu justo, elementum cursus vehicula et, sagittis non ante. Sed at metus enim. Donec pretium dui id euismod aliquet. Proin dolor arcu, dignissim pulvinar interdum id, venenatis ullamcorper lorem. Quisque at pretium velit. Nam vel nisl in nibh molestie feugiat quis imperdiet justo. Praesent et volutpat purus. Maecenas id cursus velit. Cras vestibulum fermentum nunc vitae ultrices. Morbi auctor vel eros vel finibus. Fusce sed ullamcorper risus, et viverra diam. Nulla sed nunc vulputate urna tristique iaculis in ut sem. Sed.</p>
-			</div>
+			</div> */}
 
 			<Link to="/courses-tab/add">	<button className='ml-20 my-10 bg-blue-700 rounded-lg h-14 text-xl w-fit px-12 align-left text-white hover:bg-blue-600 font-bold'>Add course <FontAwesomeIcon className='font-bold px-1 ml-1' icon={faPlus} /></button></Link>
 

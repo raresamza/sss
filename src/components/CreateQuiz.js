@@ -3,8 +3,14 @@ import Navbar from './Navbar'
 import userService from '../service/UserService'
 import { useState } from 'react'
 import AceEditor from "react-ace";
+import { useCookies } from 'react-cookie';
 
 const CreateQuiz = () => {
+
+
+    const [cookies, setCookie, removeCookie] = useCookies(['cookie-name']);
+
+
     const [quizMasterObject, setQuizMasterObject] = useState({
         quizTitle: "",
     })
@@ -37,7 +43,7 @@ const CreateQuiz = () => {
         } else {
             document.getElementById("quizTitle").style.borderColor = "black"
             console.log("black")
-            await userService.addQuiz(quizMasterObject).then((response) => {
+            await userService.addQuiz(quizMasterObject, cookies.jwt).then((response) => {
                 console.log(response.data)
                 setCurrentCode(response.data.quizCode)
             }).catch((error) => {
@@ -83,7 +89,7 @@ const CreateQuiz = () => {
                 students: studentsArray
             }
             console.log(addStudentsDTO)
-            userService.addStudentToQuiz(addStudentsDTO).then((response) => {
+            userService.addStudentToQuiz(addStudentsDTO, cookies.jwt).then((response) => {
                 console.log(response.data)
             }).catch((error) => {
                 console.log(error)
@@ -139,7 +145,7 @@ const CreateQuiz = () => {
                 inputs: quizMasterObject.inputs.split(","),
                 test: testCode
             }
-            await userService.addProblemToQuiz(addProblemDTO).then((response) => {
+            await userService.addProblemToQuiz(addProblemDTO, cookies.jwt).then((response) => {
                 console.log(response.data)
             }).catch((error) => {
                 console.log(error)

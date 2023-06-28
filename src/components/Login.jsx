@@ -67,7 +67,7 @@ const Login = () => {
 				<div className="flex gap-12 items-center mb-6">
 					<input type="submit" value="Log in" className="px-6 py-3 bg-blue-700 cursor-pointer hover:bg-blue-600 hover:shadow-xl duration-150 font-semibold w-[max-content] rounded-lg" />
 					{/* <button onClick={(e) => getSessionStorage(e)} className="bg-green-600 rounded-lg h-12  w-36 align-left text-white float-right hover:bg-green-700 font-semibold ">Get session storage</button> */}
-					<Link to="/forgot-password" className="underline font-semibold hover:text-gray-800 duration-150">Forgot password</Link>
+					<Link to="/reset-password" className="underline font-semibold hover:text-gray-800 duration-150">Forgot password</Link>
 				</div>
 				<p className="text-md font-semibold">No account? <Link to="/sign-up" className="text-blue-700 hover:text-blue-600 duration-150 underline">Sign up</Link></p>
 			</form>

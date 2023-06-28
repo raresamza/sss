@@ -27,7 +27,7 @@ const Enroll = () => {
 
     const enroll = async (e) => {
         if (addDTO.courseCode !== undefined && addDTO.courseCode !== "" && addDTO.courseCode !== null) {
-            await userService.addCourseUser(addDTO).then((response) => {
+            await userService.addCourseUser(addDTO, cookies.jwt).then((response) => {
                 if (response.status !== 200) {
                     responseElement.innerHTML = "Please provide a valid course code ⚠️⚠️"
                     responseElement.style.color = "red"

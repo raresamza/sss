@@ -36,7 +36,7 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const role = (await userService.getUserByEmail(jwtDecode(cookies.jwt).sub)).data
+                const role = (await userService.getUserByEmail(jwtDecode(cookies.jwt).sub, cookies.jwt)).data
                 setRole(role.role)
                 console.log(role.role)
             } catch (err) {
@@ -60,9 +60,9 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
                     console.log(lectureZustand.header)
                 }
 
-                const inputsBackend = (await userService.getInputs(courseZustand.courseCode, header)).data
+                const inputsBackend = (await userService.getInputs(courseZustand.courseCode, header, cookies.jwt)).data
                 setInputsBackend(inputsBackend)
-                const testsBackend = (await userService.getTests(courseZustand.courseCode, header)).data
+                const testsBackend = (await userService.getTests(courseZustand.courseCode, header, cookies.jwt)).data
                 setTestsBackend(testsBackend)
             } catch (err) {
                 console.log(err)
@@ -222,7 +222,7 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
         }
         console.log(addTestDTO)
 
-        await userService.postTests(addTestDTO).then((response) => {
+        await userService.postTests(addTestDTO, cookies.jwt).then((response) => {
             console.log(response.data)
         }).catch((error) => {
             console.log(error)
@@ -306,7 +306,7 @@ const LectrueDisplayBlock = ({ lectureZustand, courseZustand }) => {
         }
         console.log(addInputDTO)
 
-        await userService.postInputs(addInputDTO).then((response) => {
+        await userService.postInputs(addInputDTO, cookies.jwt).then((response) => {
             console.log(response.data)
         }).catch((error) => {
             console.log(error)

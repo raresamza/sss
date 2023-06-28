@@ -7,10 +7,14 @@ import { faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import UserService from "../service/UserService";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "./firebase";
+import { useCookies } from 'react-cookie';
 
 
 
 const Register = (event) => {
+
+  const [cookies] = useCookies(['cookie-name']);
+
 
   const [user, setUser] = useState({
     id: "",
