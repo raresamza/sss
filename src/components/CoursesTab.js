@@ -48,6 +48,8 @@ const CoursesTab = () => {
 
 
 
+
+
 	function handleClick(course) {
 		setCourse(course);
 		navigate("/courses-tab/" + course.courseCode);

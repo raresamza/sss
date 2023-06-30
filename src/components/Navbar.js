@@ -50,6 +50,9 @@ const Navbar = () => {
 
         <li>
           <Link to="/home" className='text-2xl'>   <FontAwesomeIcon icon={faFire} /></Link>
+
+
+
         </li>
       </ul>
     </nav>

@@ -11,3 +11,5 @@ const QuizFallback = () => {
 }
 
 export default QuizFallback
+
+

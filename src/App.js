@@ -50,6 +50,8 @@ function App() {
           <Route path='/quiz/fallback' element={<QuizFallback />}></Route>
         </Routes>
       </BrowserRouter>
+
+
     </>
   );
 }

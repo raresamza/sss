@@ -23,7 +23,7 @@ const ResetPassword = () => {
     await userService.resetRequest(jwtDecode(cookies.jwt).sub, cookies.jwt)
   }
 
-  //pune in use effect
+
 
   return (
     <>
